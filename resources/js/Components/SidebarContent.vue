@@ -34,45 +34,45 @@
                             {{ $t('navigation.reservations') }}
                         </SidebarItem>
 
-                            <!-- :href="route('depenses.index')" -->
+                        <!-- :href="'#'" -->
                         <SidebarItem
-                        :href="'#'"
+                            :href="route('depenses.index')"
                             :icon="BanknotesIcon"
                             :active="$page.component.startsWith('Depenses')"
                         >
                             {{ $t('navigation.expenses') }}
                         </SidebarItem>
 
-                            <!-- :href="route('charges.index')" -->
+                        <!-- :href="'#'" -->
                         <SidebarItem
-                        :href="'#'"
+                            :href="route('charges.index')"
                             :icon="CreditCardIcon"
                             :active="$page.component.startsWith('ChargesMensuelles')"
                         >
                             {{ $t('navigation.monthly_charges') }}
                         </SidebarItem>
 
-                            <!-- :href="route('stocks.index')" -->
+                        <!-- :href="'#'" -->
                         <SidebarItem
-                        :href="'#'"
+                            :href="route('stocks.index')"
                             :icon="CubeIcon"
                             :active="$page.component.startsWith('Stocks')"
                         >
                             {{ $t('navigation.stocks') }}
                         </SidebarItem>
 
-                            <!-- :href="route('degats.index')" -->
+                        <!-- :href="'#'" -->
                         <SidebarItem
-                        :href="'#'"
+                            :href="route('degats.index')"
                             :icon="WrenchScrewdriverIcon"
                             :active="$page.component.startsWith('DegatsReparations')"
                         >
                             {{ $t('navigation.repairs') }}
                         </SidebarItem>
 
-                            <!-- :href="route('disponibilites.index')" -->
+                        <!-- :href="'#'" -->
                         <SidebarItem
-                        :href="'#'"
+                            :href="route('disponibilites.index')"
                             :icon="CalendarIcon"
                             :active="$page.component.startsWith('Disponibilites')"
                         >

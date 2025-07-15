@@ -34,7 +34,7 @@
               v-model="form.service"
               type="text"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.service }"
               placeholder="Ex: EDF, Gaz, Internet..."
             />
@@ -49,7 +49,7 @@
             </label>
             <select
               v-model="form.appartement_id"
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block select-field w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.appartement_id }"
             >
               <option value="">Charge générale</option>
@@ -70,7 +70,7 @@
               v-model="form.date_paiement"
               type="date"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.date_paiement }"
             />
             <p v-if="form.errors.date_paiement" class="mt-2 text-sm text-red-600">{{ form.errors.date_paiement }}</p>
@@ -88,7 +88,7 @@
               step="0.01"
               min="0"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.montant }"
               placeholder="0.00"
             />
@@ -102,7 +102,7 @@
             <input
               v-model="form.recurrent"
               type="checkbox"
-              class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
+              class="h-4 w-4 input-field text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
             />
             <label class="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
               <ArrowPathIcon class="inline h-4 w-4 mr-2" />

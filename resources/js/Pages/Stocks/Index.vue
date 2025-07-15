@@ -68,7 +68,7 @@
             v-model="filters.search"
             type="text"
             placeholder="Nom de l'élément..."
-            class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+            class="block w-full input-field rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
           />
         </div>
 
@@ -79,7 +79,7 @@
           </label>
           <select
             v-model="filters.apartment"
-            class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+            class="block select-field w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
           >
             <option value="">Tous les appartements</option>
             <option v-for="apt in apartments" :key="apt.id" :value="apt.id">
@@ -95,7 +95,7 @@
           </label>
           <select
             v-model="filters.alert"
-            class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+            class="block w-full select-field rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
           >
             <option value="">Tous les stocks</option>
             <option value="low">Stock faible uniquement</option>

@@ -58,19 +58,19 @@ Route::middleware(['auth', 'verified', 'locale'])->group(function () {
     Route::resource('reservations', ReservationController::class);
 
     // Dépenses
-    // Route::resource('depenses', DepenseController::class);
+    Route::resource('depenses', DepenseController::class);
 
     // Charges mensuelles
-    // Route::resource('charges', ChargeMensuelleController::class);
+    Route::resource('charges', ChargeMensuelleController::class);
 
     // Stocks
-    // Route::resource('stocks', StockController::class);
+    Route::resource('stocks', StockController::class);
 
     // Dégâts et réparations
-    // Route::resource('degats', DegatReparationController::class);
+    Route::resource('degats', DegatReparationController::class);
 
     // Disponibilités
-    // Route::resource('disponibilites', DisponibiliteController::class);
+    Route::resource('disponibilites', DisponibiliteController::class);
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -90,7 +90,7 @@ Route::middleware(['auth', 'verified', 'locale'])->group(function () {
     Route::get('/reports/occupancy', function () {
         return Inertia::render('Reports/Occupancy');
     })->name('reports.occupancy');
-    
+
     // Language switching
     Route::post('/language', [LanguageController::class, 'switch'])->name('language.switch');
 });

@@ -29,7 +29,7 @@ class DegatReparationController extends Controller
         $degats = $query->latest('date')->paginate(15)->withQueryString();
         $apartments = Appartement::all();
 
-        return Inertia::render('Degats/Index', [
+        return Inertia::render('DegatsReparations/Index', [
             'degats' => $degats,
             'apartments' => $apartments,
             'filters' => $request->only(['search', 'status', 'apartment']),
@@ -40,7 +40,7 @@ class DegatReparationController extends Controller
     {
         $apartments = Appartement::all();
 
-        return Inertia::render('Degats/Form', [
+        return Inertia::render('DegatsReparations/Form', [
             'apartments' => $apartments,
         ]);
     }
@@ -69,7 +69,7 @@ class DegatReparationController extends Controller
     {
         $apartments = Appartement::all();
 
-        return Inertia::render('Degats/Form', [
+        return Inertia::render('DegatsReparations/Form', [
             'degat' => $degat,
             'apartments' => $apartments,
         ]);

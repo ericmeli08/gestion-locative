@@ -36,7 +36,7 @@
             v-model="filters.search"
             type="text"
             placeholder="Description, type..."
-            class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+            class="block input-field w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
           />
         </div>
 
@@ -47,7 +47,7 @@
           </label>
           <select
             v-model="filters.status"
-            class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+            class="block w-full select-field rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
           >
             <option value="">Tous les statuts</option>
             <option value="signale">Signalé</option>
@@ -63,7 +63,7 @@
           </label>
           <select
             v-model="filters.apartment"
-            class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+            class="block w-full select-field rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
           >
             <option value="">Tous les appartements</option>
             <option v-for="apt in apartments" :key="apt.id" :value="apt.id">

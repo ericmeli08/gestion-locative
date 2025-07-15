@@ -36,10 +36,10 @@
                         v-model="filters.search"
                         type="text"
                         placeholder="Description, type..."
-                        class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+                        class="block input-field w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
                     />
                 </div>
-                
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         <TagIcon class="inline h-4 w-4 mr-1" />
@@ -47,7 +47,7 @@
                     </label>
                     <select
                         v-model="filters.type"
-                        class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+                        class="block select-field w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
                     >
                         <option value="">Tous les types</option>
                         <option value="maintenance">Maintenance</option>
@@ -56,7 +56,7 @@
                         <option value="autre">Autre</option>
                     </select>
                 </div>
-                
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         <BuildingOffice2Icon class="inline h-4 w-4 mr-1" />
@@ -64,7 +64,7 @@
                     </label>
                     <select
                         v-model="filters.apartment"
-                        class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+                        class="block select-field w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
                     >
                         <option value="">Tous les appartements</option>
                         <option v-for="apt in apartments" :key="apt.id" :value="apt.id">
@@ -72,7 +72,7 @@
                         </option>
                     </select>
                 </div>
-                
+
                 <div class="flex items-end">
                     <button
                         @click="resetFilters"
@@ -109,8 +109,8 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                        <tr 
-                            v-for="depense in depenses.data" 
+                        <tr
+                            v-for="depense in depenses.data"
                             :key="depense.id"
                             class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
                         >
@@ -155,7 +155,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
             <!-- Pagination -->
             <div class="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6">
                 <Pagination :links="depenses.links" />

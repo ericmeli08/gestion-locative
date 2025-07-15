@@ -35,7 +35,7 @@
                                     type="email"
                                     autocomplete="email"
                                     required
-                                    class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                    class="block input-field w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                                     placeholder="votre@email.com"
                                     :class="{ 'border-red-500 focus:ring-red-500': form.errors.email }"
                                 />
@@ -60,7 +60,7 @@
                                     :type="showPassword ? 'text' : 'password'"
                                     autocomplete="current-password"
                                     required
-                                    class="block w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                    class="block input-field w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                                     placeholder="••••••••"
                                     :class="{ 'border-red-500 focus:ring-red-500': form.errors.password }"
                                 />
@@ -85,7 +85,7 @@
                                     id="remember"
                                     v-model="form.remember"
                                     type="checkbox"
-                                    class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
+                                    class="h-4 w-4 input-field text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
                                 />
                                 <label for="remember" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                                     Se souvenir de moi

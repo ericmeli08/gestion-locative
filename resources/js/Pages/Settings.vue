@@ -34,7 +34,7 @@
                 Choisissez votre langue préférée
               </p>
             </div>
-            <select class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500">
+            <select class="rounded-lg py-2 px-4 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500">
               <option value="fr">Français</option>
               <option value="en">English</option>
             </select>
@@ -68,7 +68,7 @@
             <input
               type="checkbox"
               checked
-              class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
+              class="h-4 w-4 text-primary-600 input-field focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
             />
           </div>
         </div>
@@ -98,7 +98,7 @@
               type="number"
               value="5"
               min="1"
-              class="w-20 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
+              class="w-20 rounded-lg border-gray-300 input-field dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
             />
           </div>
 
@@ -116,7 +116,7 @@
             <input
               type="checkbox"
               checked
-              class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
+              class="h-4 w-4 text-primary-600 input-field focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
             />
           </div>
         </div>
@@ -142,7 +142,7 @@
                 Devise utilisée pour tous les montants
               </p>
             </div>
-            <select class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500">
+            <select class="rounded-lg py-2 px-4 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500">
               <option value="EUR">Euro (€)</option>
               <option value="USD">Dollar ($)</option>
               <option value="GBP">Livre (£)</option>
@@ -160,7 +160,7 @@
                 Format d'affichage des dates
               </p>
             </div>
-            <select class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500">
+            <select class="rounded-lg py-2 px-4 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500">
               <option value="dd/mm/yyyy">DD/MM/YYYY</option>
               <option value="mm/dd/yyyy">MM/DD/YYYY</option>
               <option value="yyyy-mm-dd">YYYY-MM-DD</option>
@@ -189,7 +189,7 @@
                 Télécharger toutes vos données au format CSV
               </p>
             </div>
-            <button class="btn btn-secondary">
+            <button class="btn btn-secondary flex items-center">
               <DocumentArrowDownIcon class="w-4 h-4 mr-2" />
               Exporter
             </button>
@@ -209,7 +209,7 @@
             <input
               type="checkbox"
               checked
-              class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
+              class="h-4 w-4 text-primary-600 input-field focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
             />
           </div>
         </div>
@@ -217,11 +217,11 @@
 
       <!-- Actions -->
       <div class="flex justify-end space-x-4">
-        <button class="btn btn-secondary">
+        <button class="btn btn-secondary flex items-center">
           <ArrowPathIcon class="w-4 h-4 mr-2" />
           Réinitialiser
         </button>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary flex items-center">
           <CheckIcon class="w-4 h-4 mr-2" />
           Enregistrer les modifications
         </button>

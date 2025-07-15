@@ -34,7 +34,7 @@
               v-model="form.element"
               type="text"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block input-field w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.element }"
               placeholder="Ex: Papier toilette, Serviettes..."
             />
@@ -49,7 +49,7 @@
             </label>
             <select
               v-model="form.appartement_id"
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full select-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.appartement_id }"
             >
               <option value="">Stock général</option>
@@ -71,7 +71,7 @@
               type="number"
               min="0"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.quantite_mois }"
               placeholder="0"
             />
@@ -91,7 +91,7 @@
               min="0"
               :max="form.quantite_mois"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.utilise }"
               placeholder="0"
             />
@@ -110,7 +110,7 @@
               type="number"
               min="0"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full rounded-xl input-field border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.seuil }"
               placeholder="0"
             />

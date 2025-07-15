@@ -34,7 +34,7 @@
               v-model="form.date"
               type="date"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.date }"
             />
             <p v-if="form.errors.date" class="mt-2 text-sm text-red-600">{{ form.errors.date }}</p>
@@ -49,7 +49,7 @@
             <select
               v-model="form.type_depense"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full select-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.type_depense }"
             >
               <option value="">Sélectionner un type</option>
@@ -71,7 +71,7 @@
             </label>
             <select
               v-model="form.appartement_id"
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block select-field w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.appartement_id }"
             >
               <option value="">Dépense générale</option>
@@ -94,7 +94,7 @@
               step="0.01"
               min="0"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.montant }"
               placeholder="0.00"
             />

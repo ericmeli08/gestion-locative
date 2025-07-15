@@ -34,7 +34,7 @@
               v-model="form.date"
               type="date"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.date }"
             />
             <p v-if="form.errors.date" class="mt-2 text-sm text-red-600">{{ form.errors.date }}</p>
@@ -49,7 +49,7 @@
             <select
               v-model="form.appartement_id"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block select-field w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.appartement_id }"
             >
               <option value="">Sélectionner un appartement</option>
@@ -69,7 +69,7 @@
             <select
               v-model="form.type_degat"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block select-field w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.type_degat }"
             >
               <option value="">Sélectionner un type</option>
@@ -94,7 +94,7 @@
             <select
               v-model="form.statut"
               required
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block  select-field w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.statut }"
             >
               <option value="signale">Signalé</option>
@@ -149,7 +149,7 @@
             <input
               v-model="form.date_reparation"
               type="date"
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.date_reparation }"
             />
             <p v-if="form.errors.date_reparation" class="mt-2 text-sm text-red-600">{{ form.errors.date_reparation }}</p>
@@ -164,7 +164,7 @@
             <input
               v-model="form.reparateur"
               type="text"
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.reparateur }"
               placeholder="Nom du réparateur"
             />
@@ -182,7 +182,7 @@
               type="number"
               step="0.01"
               min="0"
-              class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+              class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.cout }"
               placeholder="0.00"
             />
