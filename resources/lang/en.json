@@ -1,0 +1,113 @@
+{
+    "dashboard": {
+        "title": "Dashboard",
+        "subtitle": "Overview of your rental activity",
+        "metrics": {
+            "revenue": "Revenue",
+            "expenses": "Expenses",
+            "profit": "Profit",
+            "occupancy": "Occupancy Rate"
+        },
+        "recent_reservations": "Recent Reservations",
+        "stock_alerts": "Stock Alerts",
+        "no_stock_alerts": "No stock alerts"
+    },
+    "reservations": {
+        "title": "Reservations",
+        "subtitle": "Manage all your reservations",
+        "add_new": "New Reservation",
+        "create_title": "Create Reservation",
+        "create_subtitle": "Add a new reservation",
+        "edit_title": "Edit Reservation",
+        "edit_subtitle": "Update reservation information",
+        "no_reservations": "No reservations",
+        "no_reservations_description": "Start by creating your first reservation.",
+        "confirm_delete": "Are you sure you want to delete this reservation?",
+        "table": {
+            "client": "Client",
+            "apartment": "Apartment",
+            "dates": "Dates",
+            "revenue": "Revenue",
+            "status": "Status"
+        },
+        "fields": {
+            "client": "Client",
+            "platform": "Platform",
+            "apartment": "Apartment",
+            "price_per_night": "Price per night",
+            "check_in": "Check-in date",
+            "check_out": "Check-out date",
+            "nights_count": "Number of nights",
+            "total_revenue": "Total revenue",
+            "payment_status": "Payment status",
+            "payment_date": "Payment date"
+        },
+        "filters": {
+            "search": "Search",
+            "search_placeholder": "Search by client name...",
+            "status": "Status",
+            "apartment": "Apartment"
+        },
+        "status": {
+            "paid": "Paid",
+            "unpaid": "Unpaid",
+            "partial": "Partial"
+        },
+        "platforms": {
+            "direct": "Direct booking"
+        },
+        "calculations": "Automatic calculations"
+    },
+    "navigation": {
+        "dashboard": "Dashboard",
+        "reservations": "Reservations",
+        "expenses": "Expenses",
+        "monthly_charges": "Monthly Charges",
+        "stocks": "Stocks",
+        "repairs": "Repairs",
+        "availability": "Availability",
+        "reports": "Reports",
+        "monthly_summary": "Monthly Summary",
+        "occupancy_rate": "Occupancy Rate",
+        "settings": "Settings",
+        "profile": "Profile",
+        "logout": "Logout"
+    },
+    "common": {
+        "all": "All",
+        "actions": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "saving": "Saving...",
+        "cancel": "Cancel",
+        "reset_filters": "Reset filters",
+        "select_option": "Select an option",
+        "nights": "nights"
+    },
+    "stocks": {
+        "remaining": "Remaining",
+        "restock": "Restock"
+    },
+    "notifications": {
+        "title": "Notifications",
+        "no_notifications": "No notifications",
+        "mark_all_read": "Mark all as read"
+    },
+    "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "showing": "Showing",
+        "to": "to",
+        "of": "of",
+        "results": "results"
+    },
+    "theme": {
+        "toggle": "Toggle theme"
+    },
+    "time": {
+        "just_now": "Just now",
+        "hours_ago": ":count hour ago|:count hours ago",
+        "days_ago": ":count day ago|:count days ago"
+    }
+}

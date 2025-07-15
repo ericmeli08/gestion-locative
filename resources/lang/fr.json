@@ -1,0 +1,113 @@
+{
+    "dashboard": {
+        "title": "Tableau de bord",
+        "subtitle": "Vue d'ensemble de votre activité locative",
+        "metrics": {
+            "revenue": "Revenus",
+            "expenses": "Dépenses",
+            "profit": "Bénéfice",
+            "occupancy": "Taux d'occupation"
+        },
+        "recent_reservations": "Réservations récentes",
+        "stock_alerts": "Alertes de stock",
+        "no_stock_alerts": "Aucune alerte de stock"
+    },
+    "reservations": {
+        "title": "Réservations",
+        "subtitle": "Gérez toutes vos réservations",
+        "add_new": "Nouvelle réservation",
+        "create_title": "Créer une réservation",
+        "create_subtitle": "Ajouter une nouvelle réservation",
+        "edit_title": "Modifier la réservation",
+        "edit_subtitle": "Mettre à jour les informations de la réservation",
+        "no_reservations": "Aucune réservation",
+        "no_reservations_description": "Commencez par créer votre première réservation.",
+        "confirm_delete": "Êtes-vous sûr de vouloir supprimer cette réservation ?",
+        "table": {
+            "client": "Client",
+            "apartment": "Appartement",
+            "dates": "Dates",
+            "revenue": "Revenus",
+            "status": "Statut"
+        },
+        "fields": {
+            "client": "Client",
+            "platform": "Plateforme",
+            "apartment": "Appartement",
+            "price_per_night": "Prix par nuit",
+            "check_in": "Date d'entrée",
+            "check_out": "Date de sortie",
+            "nights_count": "Nombre de nuits",
+            "total_revenue": "Revenus totaux",
+            "payment_status": "Statut de paiement",
+            "payment_date": "Date de paiement"
+        },
+        "filters": {
+            "search": "Rechercher",
+            "search_placeholder": "Rechercher par nom de client...",
+            "status": "Statut",
+            "apartment": "Appartement"
+        },
+        "status": {
+            "paid": "Payé",
+            "unpaid": "Non payé",
+            "partial": "Partiel"
+        },
+        "platforms": {
+            "direct": "Réservation directe"
+        },
+        "calculations": "Calculs automatiques"
+    },
+    "navigation": {
+        "dashboard": "Tableau de bord",
+        "reservations": "Réservations",
+        "expenses": "Dépenses",
+        "monthly_charges": "Charges mensuelles",
+        "stocks": "Stocks",
+        "repairs": "Réparations",
+        "availability": "Disponibilités",
+        "reports": "Rapports",
+        "monthly_summary": "Résumé mensuel",
+        "occupancy_rate": "Taux d'occupation",
+        "settings": "Paramètres",
+        "profile": "Profil",
+        "logout": "Déconnexion"
+    },
+    "common": {
+        "all": "Tous",
+        "actions": "Actions",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "save": "Enregistrer",
+        "saving": "Enregistrement...",
+        "cancel": "Annuler",
+        "reset_filters": "Réinitialiser les filtres",
+        "select_option": "Sélectionner une option",
+        "nights": "nuits"
+    },
+    "stocks": {
+        "remaining": "Restant",
+        "restock": "Réapprovisionner"
+    },
+    "notifications": {
+        "title": "Notifications",
+        "no_notifications": "Aucune notification",
+        "mark_all_read": "Tout marquer comme lu"
+    },
+    "pagination": {
+        "previous": "Précédent",
+        "next": "Suivant",
+        "showing": "Affichage de",
+        "to": "à",
+        "of": "sur",
+        "results": "résultats"
+    },
+    "theme": {
+        "toggle": "Basculer le thème"
+    },
+    "time": {
+        "just_now": "À l'instant",
+        "hours_ago": "Il y a :count heure|Il y a :count heures",
+        "days_ago": "Il y a :count jour|Il y a :count jours"
+    }
+}
