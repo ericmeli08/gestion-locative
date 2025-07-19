@@ -72,7 +72,6 @@ Route::middleware(['auth', 'verified', 'locale'])->group(function () {
     // Disponibilités
     Route::resource('disponibilites', DisponibiliteController::class);
 
-
     // Reports
     Route::get('/reports/monthly', [App\Http\Controllers\ReportController::class, 'monthly'])->name('reports.monthly');
     Route::get('/reports/occupancy', [App\Http\Controllers\ReportController::class, 'occupancy'])->name('reports.occupancy');
@@ -88,14 +87,14 @@ Route::middleware(['auth', 'verified', 'locale'])->group(function () {
         return Inertia::render('Settings');
     })->name('settings');
 
-    // Reports
-    Route::get('/reports/monthly', function () {
-        return Inertia::render('Reports/Monthly');
-    })->name('reports.monthly');
+    // // Reports
+    // Route::get('/reports/monthly', function () {
+    //     return Inertia::render('Reports/Monthly');
+    // })->name('reports.monthly');
 
-    Route::get('/reports/occupancy', function () {
-        return Inertia::render('Reports/Occupancy');
-    })->name('reports.occupancy');
+    // Route::get('/reports/occupancy', function () {
+    //     return Inertia::render('Reports/Occupancy');
+    // })->name('reports.occupancy');
 
     // Language switching
     Route::post('/language', [LanguageController::class, 'switch'])->name('language.switch');

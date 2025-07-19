@@ -34,8 +34,8 @@
             <select v-model="selectedApartment" @change="updatePeriod" class="input-field">
               <option value="">Tous les appartements</option>
               <option v-for="apt in apartments" :key="apt.id" :value="apt.id">
-                {{ apt.name }}
-              </option>
+                            {{ apt.name }}
+                        </option>
             </select>
           </div>
         </div>
@@ -152,7 +152,7 @@
             </tr>
           </thead>
           <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-            <tr v-for="month in monthlyData" :key="month.month" class="hover:bg-gray-50 dark:hover:bg-gray-700">
+            <tr v-for="month in monthlyData.slice().reverse()" :key="month.month" class="hover:bg-gray-50 dark:hover:bg-gray-700">
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                 {{ formatMonth(month.month) }}
               </td>
@@ -196,6 +196,7 @@ const props = defineProps({
   selectedPeriod: String,
   selectedApartment: String,
 })
+console.log(props)
 
 const selectedPeriod = ref(props.selectedPeriod || '12')
 const selectedApartment = ref(props.selectedApartment || '')
@@ -223,7 +224,26 @@ const updatePeriod = () => {
   })
 }
 
-const exportData = () => {
+// const exportData = () => {
+//   // Logic to export data as CSV/Excel
+//   const csvContent = "data:text/csv;charset=utf-8,"
+//     + "Mois,Revenus,Dépenses,Charges,Bénéfice,Marge\n"
+//     + props.monthlyData?.map(month =>
+//         `${month.month},${month.revenue},${month.expenses},${month.charges},${month.profit},${month.margin}%`
+//       ).join("\n")
+
+//   const encodedUri = encodeURI(csvContent)
+//   const link = document.createElement("a")
+//   link.setAttribute("href", encodedUri)
+//   link.setAttribute("download", "rapport-mensuel.csv")
+//   document.body.appendChild(link)
+//   link.click()
+//   document.body.removeChild(link)
+// }
+
+import * as XLSX from 'xlsx'
+
+ const exportData = () => {
   // Logic to export data as CSV/Excel
   const csvContent = "data:text/csv;charset=utf-8,"
     + "Mois,Revenus,Dépenses,Charges,Bénéfice,Marge\n"
@@ -238,7 +258,102 @@ const exportData = () => {
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
-}
+  // Créer un nouveau classeur Excel
+  const workbook = XLSX.utils.book_new()
+
+  // Préparer les données avec en-têtes
+  const worksheetData = [
+    ['Mois', 'Revenus (F CFA)', 'Dépenses (F CFA)', 'Charges (F CFA)', 'Bénéfice (F CFA)', 'Marge (%)']
+  ]
+
+  // Ajouter les données mensuelles
+  props.monthlyData?.forEach(month => {
+    worksheetData.push([
+      month.month,
+      parseFloat(month.revenue) || 0,
+      parseFloat(month.expenses) || 0,
+      parseFloat(month.charges) || 0,
+      parseFloat(month.profit) || 0,
+      parseFloat(month.margin) || 0
+    ])
+  })
+
+  // Créer la feuille de calcul
+  const worksheet = XLSX.utils.aoa_to_sheet(worksheetData)
+
+  // Définir la largeur des colonnes
+  const columnWidths = [
+    { wch: 15 }, // Mois
+    { wch: 12 }, // Revenus
+    { wch: 12 }, // Dépenses
+    { wch: 12 }, // Charges
+    { wch: 12 }, // Bénéfice
+    { wch: 10 }  // Marge
+  ]
+  worksheet['!cols'] = columnWidths
+
+  // Appliquer des styles aux en-têtes
+  const headerRange = XLSX.utils.decode_range(worksheet['!ref'])
+  for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: col })
+    if (!worksheet[cellAddress]) continue
+
+    worksheet[cellAddress].s = {
+      font: { bold: true, color: { rgb: "FFFFFF" } },
+      fill: { fgColor: { rgb: "4F46E5" } },
+      alignment: { horizontal: "center", vertical: "center" },
+      border: {
+        top: { style: "thin", color: { rgb: "000000" } },
+        bottom: { style: "thin", color: { rgb: "000000" } },
+        left: { style: "thin", color: { rgb: "000000" } },
+        right: { style: "thin", color: { rgb: "000000" } }
+      }
+    }
+  }
+
+  // Appliquer des styles aux données
+  for (let row = 1; row <= headerRange.e.r; row++) {
+    for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
+      const cellAddress = XLSX.utils.encode_cell({ r: row, c: col })
+      if (!worksheet[cellAddress]) continue
+
+      // Format monétaire pour les colonnes de montants
+      if (col >= 1 && col <= 4) {
+        worksheet[cellAddress].z = '#,##0.00"F CFA"'
+      }
+      // Format pourcentage pour la colonne marge
+      else if (col === 5) {
+        worksheet[cellAddress].z = '0.00"%"'
+      }
+
+      // Style des cellules de données
+      worksheet[cellAddress].s = {
+        alignment: { horizontal: col === 0 ? "left" : "right", vertical: "center" },
+        border: {
+          top: { style: "thin", color: { rgb: "E5E7EB" } },
+          bottom: { style: "thin", color: { rgb: "E5E7EB" } },
+          left: { style: "thin", color: { rgb: "E5E7EB" } },
+          right: { style: "thin", color: { rgb: "E5E7EB" } }
+        }
+      }
+
+      // Couleur alternée pour les lignes
+      if (row % 2 === 0) {
+        worksheet[cellAddress].s.fill = { fgColor: { rgb: "F9FAFB" } }
+      }
+    }
+  }
+
+  // Ajouter la feuille au classeur
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Rapport Mensuel')
+
+  // Générer le nom de fichier avec la date actuelle
+  const currentDate = new Date()
+  const fileName = `rapport-mensuel-${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}.xlsx`
+
+  // Télécharger le fichier
+  XLSX.writeFile(workbook, fileName)
+ }
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('fr-FR', {

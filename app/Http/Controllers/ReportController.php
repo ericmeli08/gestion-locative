@@ -78,6 +78,7 @@ class ReportController extends Controller
 
         $apartments = Appartement::all();
 
+
         return Inertia::render('Reports/Monthly', [
             'monthlyData' => $monthlyData,
             'apartments' => $apartments,

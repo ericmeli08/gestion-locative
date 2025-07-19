@@ -227,7 +227,7 @@
           </thead>
           <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             <tr
-              v-for="data in occupancyData"
+              v-for="data in occupancyData.slice().reverse()"
               :key="`${data.month}-${data.apartment_id}`"
               class="hover:bg-gray-50 dark:hover:bg-gray-700"
             >

@@ -84,7 +84,7 @@
             <SidebarItem
               :href="route('reports.monthly')"
               :icon="ChartBarIcon"
-              :active="$page.component.startsWith('Reports')"
+              :active="$page.component.startsWith('Reports/Monthly')"
             >
               {{ $t('navigation.monthly_summary') }}
             </SidebarItem>
@@ -92,7 +92,7 @@
             <SidebarItem
               :href="route('reports.occupancy')"
               :icon="PresentationChartLineIcon"
-              :active="$page.component.startsWith('Occupancy')"
+              :active="$page.component.startsWith('Reports/Occupancy')"
             >
               {{ $t('navigation.occupancy_rate') }}
             </SidebarItem>
@@ -114,7 +114,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { usePage } from '@inertiajs/vue3'
 import {
   HomeIcon,
