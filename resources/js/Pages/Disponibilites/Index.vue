@@ -17,7 +17,8 @@
     <div
       class="mb-6 bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700"
     >
-      <div class="flex items-center justify-between">
+
+      <div class="flex items-center flex-col gap-3 lg:flex-row lg:justify-between">
         <div class="flex items-center space-x-4">
           <button
             @click="previousMonth"
@@ -35,6 +36,23 @@
             <ChevronRightIcon class="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
         </div>
+
+<!--  -->
+         <div>
+          <!-- <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            {{ $t('reservations.filters.apartment') }}
+          </label> -->
+          <select
+            v-model="apartment"
+            class="block select-field w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
+          >
+            <option value="">{{ $t('common.all') }}</option>
+            <option v-for="apt in apartments" :key="apt.id" :value="apt.id">
+              {{ apt.name }}
+            </option>
+          </select>
+        </div>
+
         <div class="flex items-center space-x-2">
           <div class="flex items-center space-x-1">
             <div class="w-4 h-4 bg-success-500 rounded"></div>
@@ -44,10 +62,10 @@
             <div class="w-4 h-4 bg-primary-500 rounded"></div>
             <span class="text-sm text-gray-600 dark:text-gray-400">Occupé</span>
           </div>
-          <div class="flex items-center space-x-1">
+          <!-- <div class="flex items-center space-x-1">
             <div class="w-4 h-4 bg-warning-500 rounded"></div>
             <span class="text-sm text-gray-600 dark:text-gray-400">Maintenance</span>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -55,7 +73,7 @@
     <!-- Calendar grid -->
     <div class="space-y-8">
       <div
-        v-for="apartment in apartments"
+        v-for="apartment in filterApartment"
         :key="apartment.id"
         class="bg-white dark:bg-gray-800 shadow-card rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
       >
@@ -82,16 +100,28 @@
 
           <div class="grid grid-cols-7 gap-1">
             <div v-for="date in calendarDays" :key="date.date" class="aspect-square">
+            <div v-if="date.inMonth" class="w-full h-full">
+
               <button
-                v-if="date.inMonth"
-                @click="toggleAvailability(apartment.id, date.date)"
+                v-if="!isDateAvailable(date.date,apartment.id)"
+                @click="goToReservation(apartment.id, date.date)"
                 :class="[
                   'w-full h-full rounded-lg border-2 transition-all duration-200 hover:scale-105 flex items-center justify-center text-sm font-medium',
-                  getDateClasses(apartment.id, date.date),
+                  getAvailableClasses(true),
                 ]"
               >
                 {{ date.day }}
               </button>
+              <button v-else
+                @click="toggleAvailability(apartment.id, date.date)"
+                :class="[
+                  'w-full h-full rounded-lg border-2 transition-all duration-200 hover:scale-105 flex items-center justify-center text-sm font-medium',
+                  getAvailableClasses(false),
+                ]"
+              >
+                {{ date.day }}
+              </button>
+            </div>
               <div
                 v-else
                 class="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-600 text-sm"
@@ -107,7 +137,7 @@
     <!-- Status change modal -->
     <div v-if="showModal" class="fixed inset-0 z-50 overflow-y-auto">
       <div class="flex items-center justify-center min-h-screen px-4">
-        <div class="fixed inset-0 bg-black bg-opacity-25" @click="closeModal"></div>
+        <div class="fixed inset-0 bg-black/25 bg-opacity-25" @click="closeModal"></div>
         <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6">
           <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
             Modifier la disponibilité
@@ -146,8 +176,9 @@
 </template>
 
 <script setup lang="ts">
+
 import { ref, computed } from 'vue'
-import { router } from '@inertiajs/vue3'
+import { router,Head } from '@inertiajs/vue3'
 import {
   CalendarIcon,
   BuildingOffice2Icon,
@@ -159,10 +190,28 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 const props = defineProps({
   apartments: Array,
   disponibilites: Object,
+  available: Object,
   currentMonth: String,
   startDate: String,
   endDate: String,
 })
+
+
+console.log('Disponibilités:', props.disponibilites);
+console.log('Résultat:', props.available);
+
+import { useI18n } from '@/Composables/useI18n'
+
+const { $t } = useI18n()
+const apartment = ref('')
+const filterApartment = computed( () => {
+  console.log('Filtering by apartment:', apartment.value);
+  return apartment.value ? props.apartments.filter(apt => apt.id === apartment.value) : props.apartments
+})
+
+const isDateAvailable = ( date,id_apartment) => {
+  return props.available.find((d) => d.date === date && d.reservation.appartement_id === id_apartment) !== undefined
+}
 
 const showModal = ref(false)
 const modalData = ref({
@@ -171,6 +220,17 @@ const modalData = ref({
   status: 'available',
   notes: '',
 })
+
+const goToReservation = (apartmentId, date) => {
+  router.get(
+    route('reservations.create'),
+    { date, apartment_id: apartmentId },
+    {
+      preserveState: true,
+      replace: false
+    }
+  )
+}
 
 const calendarDays = computed(() => {
   const start = new Date(props.startDate)
@@ -197,24 +257,18 @@ const calendarDays = computed(() => {
   return days
 })
 
-const getDateClasses = (apartmentId, date) => {
-  const availability = props.disponibilites[apartmentId]?.find((d) => d.date === date)
-  const status = availability?.statut || 'available'
-
+const getAvailableClasses = (valid:boolean) => {
   const baseClasses = 'border-gray-200 dark:border-gray-600'
-  const statusClasses = {
-    available:
-      'bg-success-100 text-success-800 border-success-300 hover:bg-success-200 dark:bg-success-900/50 dark:text-success-300 dark:border-success-700',
-    occupied:
-      'bg-primary-100 text-primary-800 border-primary-300 hover:bg-primary-200 dark:bg-primary-900/50 dark:text-primary-300 dark:border-primary-700',
-    maintenance:
-      'bg-warning-100 text-warning-800 border-warning-300 hover:bg-warning-200 dark:bg-warning-900/50 dark:text-warning-300 dark:border-warning-700',
-  }
+  const statusClasses = valid?
+  'bg-success-100 text-success-800 border-success-300 hover:bg-success-200 dark:bg-success-900/50 dark:text-success-300 dark:border-success-700'
+  :'bg-primary-100 text-primary-800 border-primary-300 hover:bg-primary-200 dark:bg-primary-900/50 dark:text-primary-300 dark:border-primary-700'
 
-  return `${baseClasses} ${statusClasses[status]}`
+
+  return `${baseClasses} ${statusClasses}`
 }
 
 const toggleAvailability = (apartmentId, date) => {
+    console.log('toggleAvailability', apartmentId, date);
   modalData.value = {
     apartmentId,
     date,

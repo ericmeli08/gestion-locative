@@ -13,7 +13,7 @@ class ReservationController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Reservation::with('appartement'); 
+        $query = Reservation::with('appartement');
 
         // Filtres
         if ($request->filled('search')) {
@@ -38,24 +38,32 @@ class ReservationController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $apartments = Appartement::all();
-
+        $date = null;
+        $apartement_id = null;
+        if ($request->filled(['date', 'apartment_id'])) {
+            $date = $request->date;
+            $apartement_id = $request->apartment_id;
+        }
         return Inertia::render('Reservations/Form', [
             'apartments' => $apartments,
+            'date' => $date,
+            'apartment_id' => $apartement_id,
         ]);
     }
+
 
     public function store(StoreReservationRequest $request)
     {
         $validated = $request->validated();
-        
+
         // Calcul automatique du nombre de nuits et revenus
         $dateEntree = \Carbon\Carbon::parse($validated['date_entree']);
         $dateSortie = \Carbon\Carbon::parse($validated['date_sortie']);
         $nombreNuits = $dateEntree->diffInDays($dateSortie);
-        
+
         $validated['nombre_nuits'] = $nombreNuits;
         $validated['revenus_totaux'] = $nombreNuits * $validated['prix_nuit'];
 
@@ -68,7 +76,7 @@ class ReservationController extends Controller
     public function show(Reservation $reservation)
     {
         $reservation->load('appartement');
-        
+
         return Inertia::render('Reservations/Show', [
             'reservation' => $reservation,
         ]);
@@ -87,12 +95,12 @@ class ReservationController extends Controller
     public function update(UpdateReservationRequest $request, Reservation $reservation)
     {
         $validated = $request->validated();
-        
+
         // Recalcul automatique
         $dateEntree = \Carbon\Carbon::parse($validated['date_entree']);
         $dateSortie = \Carbon\Carbon::parse($validated['date_sortie']);
         $nombreNuits = $dateEntree->diffInDays($dateSortie);
-        
+
         $validated['nombre_nuits'] = $nombreNuits;
         $validated['revenus_totaux'] = $nombreNuits * $validated['prix_nuit'];
 

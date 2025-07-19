@@ -100,7 +100,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { CalendarDaysIcon } from '@heroicons/vue/24/outline'
 import StatusBadge from '@/Components/StatusBadge.vue'
@@ -143,7 +143,7 @@ const formatDate = (date) => {
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
-    currency: 'EUR',
+    currency: 'XOF',
   }).format(amount)
 }
 </script>

@@ -204,7 +204,7 @@
   </AppLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive, watch } from 'vue'
 import { Head, Link, router } from '@inertiajs/vue3'
 import {
@@ -263,7 +263,7 @@ const formatDate = (date) => {
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
-    currency: 'EUR',
+    currency: 'XOF',
   }).format(amount)
 }
 </script>

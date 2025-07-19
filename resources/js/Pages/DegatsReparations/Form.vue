@@ -127,7 +127,7 @@
             v-model="form.description"
             rows="4"
             required
-            class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+            class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
             :class="{ 'border-red-500 focus:ring-red-500': form.errors.description }"
             placeholder="Décrivez le problème en détail..."
           ></textarea>
@@ -145,7 +145,7 @@
           <textarea
             v-model="form.solution"
             rows="3"
-            class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+            class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
             :class="{ 'border-red-500 focus:ring-red-500': form.errors.solution }"
             placeholder="Décrivez la solution mise en place..."
           ></textarea>
@@ -195,7 +195,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               <CurrencyEuroIcon class="inline h-4 w-4 mr-2" />
-              Coût (€)
+              Coût (F CFA)
             </label>
             <input
               v-model.number="form.cout"
@@ -241,7 +241,8 @@
   </AppLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { Head, Link } from '@inertiajs/vue3'
 import { useForm } from '@inertiajs/vue3'
 import {
   ArrowLeftIcon,
@@ -257,6 +258,9 @@ import {
   CheckIcon,
 } from '@heroicons/vue/24/outline'
 import AppLayout from '@/Layouts/AppLayout.vue'
+import dayjs from 'dayjs'
+
+const formatDate = (isoString) => isoString? dayjs(isoString).format('YYYY-MM-DD'): dayjs().format('YYYY-MM-DD')
 
 const props = defineProps({
   degat: Object,
@@ -264,7 +268,7 @@ const props = defineProps({
 })
 
 const form = useForm({
-  date: props.degat?.date || new Date().toISOString().split('T')[0],
+  date: formatDate(props.degat?.date || ''),
   appartement_id: props.degat?.appartement_id || '',
   type_degat: props.degat?.type_degat || '',
   description: props.degat?.description || '',

@@ -92,7 +92,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               <CurrencyEuroIcon class="inline h-4 w-4 mr-2" />
-              Montant (€)
+              Montant (F CFA)
             </label>
             <input
               v-model.number="form.montant"
@@ -137,7 +137,7 @@
           <textarea
             v-model="form.notes"
             rows="3"
-            class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
+            class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
             :class="{ 'border-red-500 focus:ring-red-500': form.errors.notes }"
             placeholder="Informations complémentaires..."
           ></textarea>
@@ -175,7 +175,8 @@
   </AppLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { Head, Link } from '@inertiajs/vue3'
 import { useForm } from '@inertiajs/vue3'
 import {
   ArrowLeftIcon,
@@ -190,6 +191,9 @@ import {
   CheckIcon,
 } from '@heroicons/vue/24/outline'
 import AppLayout from '@/Layouts/AppLayout.vue'
+import dayjs from 'dayjs'
+
+const formatDate = (isoString) => isoString? dayjs(isoString).format('YYYY-MM-DD'): dayjs().format('YYYY-MM-DD')
 
 const props = defineProps({
   charge: Object,
@@ -199,7 +203,7 @@ const props = defineProps({
 const form = useForm({
   service: props.charge?.service || '',
   appartement_id: props.charge?.appartement_id || '',
-  date_paiement: props.charge?.date_paiement || new Date().toISOString().split('T')[0],
+  date_paiement: formatDate(props.charge?.date_paiement || ''),
   montant: props.charge?.montant || 0,
   recurrent: props.charge?.recurrent || true,
   notes: props.charge?.notes || '',

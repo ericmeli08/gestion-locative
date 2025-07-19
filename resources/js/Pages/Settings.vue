@@ -154,6 +154,7 @@
               <option value="EUR">Euro (€)</option>
               <option value="USD">Dollar ($)</option>
               <option value="GBP">Livre (£)</option>
+              <option value="XOF">Franc CFA (XOF)</option>
             </select>
           </div>
 

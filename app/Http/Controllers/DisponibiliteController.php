@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Disponibilite;
 use App\Models\Appartement;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
@@ -14,7 +15,7 @@ class DisponibiliteController extends Controller
     {
         $apartments = Appartement::all();
         $currentMonth = $request->get('month', Carbon::now()->format('Y-m'));
-        
+
         $startDate = Carbon::parse($currentMonth . '-01');
         $endDate = $startDate->copy()->endOfMonth();
 
@@ -23,9 +24,44 @@ class DisponibiliteController extends Controller
             ->get()
             ->groupBy('appartement_id');
 
+    // On récupère les bornes du currentMonth (début et fin)
+    $startOfMonth = Carbon::parse($currentMonth)->startOfMonth()->startOfDay();
+    $endOfMonth = Carbon::parse($currentMonth)->endOfMonth()->endOfDay();
+
+    // On récupère les réservations qui chevauchent ce mois
+    $reservations = Reservation::with('appartement')->where(function ($query) use ($startOfMonth, $endOfMonth) {
+        $query->whereBetween('date_entree', [$startOfMonth, $endOfMonth])
+              ->orWhereBetween('date_sortie', [$startOfMonth, $endOfMonth])
+              ->orWhere(function ($q) use ($startOfMonth, $endOfMonth) {
+                  $q->where('date_entree', '<=', $startOfMonth)
+                    ->where('date_sortie', '>=', $endOfMonth);
+              });
+    })->get();
+
+    // On transforme chaque réservation en plusieurs lignes par jour
+    $result = [];
+
+    foreach ($reservations as $reservation) {
+        $start = Carbon::parse((string) $reservation->date_entree);
+        $end = Carbon::parse((string) $reservation->date_sortie);
+
+        // On ne garde que les jours dans le mois demandé
+        $current = $start->copy();
+        while ($current <= $end) {
+            if ($current->between($startOfMonth, $endOfMonth)) {
+                $result[] = [
+                    'reservation' => $reservation,
+                    'date' => $current->format('Y-m-d'),
+                ];
+            }
+            $current->addDay();
+        }
+    }
+
         return Inertia::render('Disponibilites/Index', [
             'apartments' => $apartments,
             'disponibilites' => $disponibilites,
+            'available' => $result,
             'currentMonth' => $currentMonth,
             'startDate' => $startDate->format('Y-m-d'),
             'endDate' => $endDate->format('Y-m-d'),

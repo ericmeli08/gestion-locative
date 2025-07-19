@@ -95,7 +95,7 @@
   </AppLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { PlusIcon } from '@heroicons/vue/24/outline'
@@ -104,13 +104,14 @@ import ReservationTable from '@/Components/ReservationTable.vue'
 import Pagination from '@/Components/Pagination.vue'
 import { useI18n } from '@/Composables/useI18n'
 
+const { $t } = useI18n()
+
 const props = defineProps({
   reservations: Object,
   apartments: Array,
   filters: Object,
 })
 
-const { $t } = useI18n()
 
 const filters = reactive({
   search: props.filters.search || '',
@@ -119,15 +120,19 @@ const filters = reactive({
 })
 
 // Watch for filter changes and update URL
+let filterTimeout: ReturnType<typeof setTimeout> | null = null
+
 watch(
   filters,
   (newFilters) => {
-    router.get(route('reservations.index'), newFilters, {
-      preserveState: true,
-      replace: true,
-    })
-  },
-  { debounce: 300 }
+    if (filterTimeout) clearTimeout(filterTimeout)
+    filterTimeout = setTimeout(() => {
+      router.get(route('reservations.index'), newFilters, {
+        preserveState: true,
+        replace: true,
+      })
+    }, 300)
+  }
 )
 
 const resetFilters = () => {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Reservation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateReservationRequest extends FormRequest
@@ -25,6 +26,36 @@ class UpdateReservationRequest extends FormRequest
         ];
     }
 
+    public function withValidator($validator)
+{
+    $validator->after(function ($validator) {
+        $appartementId = $this->input('appartement_id');
+        $start = $this->input('date_entree');
+        $end = $this->input('date_sortie');
+
+        if (!$appartementId || !$start || !$end) {
+            return;
+        }
+
+        $conflict = Reservation::where('appartement_id', $appartementId)
+            ->where(function ($query) use ($start, $end) {
+                $query->whereBetween('date_entree', [$start, $end])
+                      ->orWhereBetween('date_sortie', [$start, $end])
+                      ->orWhere(function ($q) use ($start, $end) {
+                          $q->where('date_entree', '<=', $start)
+                            ->where('date_sortie', '>=', $end);
+                      });
+            })
+            ->first();
+
+        if ($conflict) {
+            $periode = 'du ' . date('d/m/Y', strtotime($conflict->date_entree)) .
+                       ' au ' . date('d/m/Y', strtotime($conflict->date_sortie));
+
+            $validator->errors()->add('date_entree', "L'appartement est déjà réservé $periode.");
+        }
+    });
+}
     public function messages()
     {
         return [

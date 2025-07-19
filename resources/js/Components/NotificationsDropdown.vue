@@ -109,7 +109,7 @@ const notifications = ref([
     type: 'payment_received',
     data: {
       title: 'Paiement reçu',
-      message: 'Paiement de 150€ reçu pour la réservation #123',
+      message: 'Paiement de 150 000 F CFA reçu pour la réservation #123',
     },
     read_at: new Date().toISOString(),
     created_at: new Date(Date.now() - 86400000).toISOString(),
