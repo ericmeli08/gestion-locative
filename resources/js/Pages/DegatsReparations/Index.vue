@@ -25,7 +25,9 @@
     </div>
 
     <!-- Filters -->
-    <div class="mb-6 bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+    <div
+      class="mb-6 bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700"
+    >
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -85,24 +87,36 @@
     </div>
 
     <!-- Dégâts table -->
-    <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+    <div
+      class="bg-white dark:bg-gray-800 shadow-card rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700"
+    >
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead class="bg-gray-50 dark:bg-gray-900">
             <tr>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Date & Type
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Description
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Appartement
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Statut
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Coût
               </th>
               <th class="relative px-6 py-4">
@@ -129,12 +143,17 @@
                 <div class="text-sm text-gray-900 dark:text-white max-w-xs truncate">
                   {{ degat.description }}
                 </div>
-                <div v-if="degat.solution" class="text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
+                <div
+                  v-if="degat.solution"
+                  class="text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate"
+                >
                   Solution: {{ degat.solution }}
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/50 dark:text-primary-300">
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/50 dark:text-primary-300"
+                >
                   {{ degat.appartement.name }}
                 </span>
               </td>
@@ -143,7 +162,9 @@
                   {{ getStatusLabel(degat.statut) }}
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white"
+              >
                 <span v-if="degat.cout">{{ formatCurrency(degat.cout) }}</span>
                 <span v-else class="text-gray-400">-</span>
               </td>
@@ -169,7 +190,9 @@
       </div>
 
       <!-- Pagination -->
-      <div class="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6">
+      <div
+        class="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6"
+      >
         <Pagination :links="degats.links" />
       </div>
     </div>
@@ -188,7 +211,7 @@ import {
   ArrowPathIcon,
   CalendarIcon,
   PencilIcon,
-  TrashIcon
+  TrashIcon,
 } from '@heroicons/vue/24/outline'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Pagination from '@/Components/Pagination.vue'
@@ -206,15 +229,19 @@ const filters = reactive({
 })
 
 // Watch for filter changes and update URL
-watch(filters, (newFilters) => {
-  router.get(route('degats.index'), newFilters, {
-    preserveState: true,
-    replace: true,
-  })
-}, { debounce: 300 })
+watch(
+  filters,
+  (newFilters) => {
+    router.get(route('degats.index'), newFilters, {
+      preserveState: true,
+      replace: true,
+    })
+  },
+  { debounce: 300 }
+)
 
 const resetFilters = () => {
-  Object.keys(filters).forEach(key => {
+  Object.keys(filters).forEach((key) => {
     filters[key] = ''
   })
 }
@@ -232,24 +259,27 @@ const formatDate = (date) => {
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
-    currency: 'EUR'
+    currency: 'EUR',
   }).format(amount)
 }
 
 const getStatusLabel = (status) => {
   const labels = {
-    'signale': 'Signalé',
-    'en_cours': 'En cours',
-    'termine': 'Terminé'
+    signale: 'Signalé',
+    en_cours: 'En cours',
+    termine: 'Terminé',
   }
   return labels[status] || status
 }
 
 const getStatusClasses = (status) => {
   const classes = {
-    'signale': 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning-100 text-warning-800 dark:bg-warning-900/50 dark:text-warning-300',
-    'en_cours': 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/50 dark:text-primary-300',
-    'termine': 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900/50 dark:text-success-300'
+    signale:
+      'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning-100 text-warning-800 dark:bg-warning-900/50 dark:text-warning-300',
+    en_cours:
+      'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/50 dark:text-primary-300',
+    termine:
+      'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900/50 dark:text-success-300',
   }
   return classes[status] || classes.signale
 }

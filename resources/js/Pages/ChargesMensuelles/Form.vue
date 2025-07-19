@@ -14,14 +14,20 @@
             {{ charge?.id ? 'Modifier la charge' : 'Nouvelle charge' }}
           </h1>
           <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            {{ charge?.id ? 'Mettre à jour les informations de la charge' : 'Ajouter une nouvelle charge mensuelle' }}
+            {{
+              charge?.id
+                ? 'Mettre à jour les informations de la charge'
+                : 'Ajouter une nouvelle charge mensuelle'
+            }}
           </p>
         </div>
       </div>
     </div>
 
     <!-- Form -->
-    <div class="bg-white dark:bg-gray-800 shadow-card-hover rounded-xl border border-gray-200 dark:border-gray-700">
+    <div
+      class="bg-white dark:bg-gray-800 shadow-card-hover rounded-xl border border-gray-200 dark:border-gray-700"
+    >
       <form @submit.prevent="submit" class="p-8 space-y-8">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
           <!-- Service -->
@@ -38,7 +44,9 @@
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.service }"
               placeholder="Ex: EDF, Gaz, Internet..."
             />
-            <p v-if="form.errors.service" class="mt-2 text-sm text-red-600">{{ form.errors.service }}</p>
+            <p v-if="form.errors.service" class="mt-2 text-sm text-red-600">
+              {{ form.errors.service }}
+            </p>
           </div>
 
           <!-- Appartement -->
@@ -57,7 +65,9 @@
                 {{ apt.name }}
               </option>
             </select>
-            <p v-if="form.errors.appartement_id" class="mt-2 text-sm text-red-600">{{ form.errors.appartement_id }}</p>
+            <p v-if="form.errors.appartement_id" class="mt-2 text-sm text-red-600">
+              {{ form.errors.appartement_id }}
+            </p>
           </div>
 
           <!-- Date de paiement -->
@@ -73,7 +83,9 @@
               class="block w-full input-field rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.date_paiement }"
             />
-            <p v-if="form.errors.date_paiement" class="mt-2 text-sm text-red-600">{{ form.errors.date_paiement }}</p>
+            <p v-if="form.errors.date_paiement" class="mt-2 text-sm text-red-600">
+              {{ form.errors.date_paiement }}
+            </p>
           </div>
 
           <!-- Montant -->
@@ -92,7 +104,9 @@
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.montant }"
               placeholder="0.00"
             />
-            <p v-if="form.errors.montant" class="mt-2 text-sm text-red-600">{{ form.errors.montant }}</p>
+            <p v-if="form.errors.montant" class="mt-2 text-sm text-red-600">
+              {{ form.errors.montant }}
+            </p>
           </div>
         </div>
 
@@ -132,22 +146,26 @@
 
         <!-- Actions -->
         <div class="flex justify-end space-x-4 pt-8 border-t border-gray-200 dark:border-gray-700">
-          <Link
-            :href="route('charges.index')"
-            class="btn btn-secondary"
-          >
+          <Link :href="route('charges.index')" class="btn btn-secondary">
             <XMarkIcon class="w-4 h-4 mr-2" />
             Annuler
           </Link>
-          <button
-            type="submit"
-            :disabled="form.processing"
-            class="btn btn-primary"
-          >
+          <button type="submit" :disabled="form.processing" class="btn btn-primary">
             <CheckIcon v-if="!form.processing" class="w-4 h-4 mr-2" />
             <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
             </svg>
             {{ form.processing ? 'Enregistrement...' : 'Enregistrer' }}
           </button>
@@ -169,7 +187,7 @@ import {
   ArrowPathIcon,
   DocumentTextIcon,
   XMarkIcon,
-  CheckIcon
+  CheckIcon,
 } from '@heroicons/vue/24/outline'
 import AppLayout from '@/Layouts/AppLayout.vue'
 
@@ -188,9 +206,7 @@ const form = useForm({
 })
 
 const submit = () => {
-  const url = props.charge?.id
-    ? route('charges.update', props.charge.id)
-    : route('charges.store')
+  const url = props.charge?.id ? route('charges.update', props.charge.id) : route('charges.store')
 
   const method = props.charge?.id ? 'put' : 'post'
 

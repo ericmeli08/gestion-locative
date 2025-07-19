@@ -14,14 +14,20 @@
             {{ stock?.id ? 'Modifier le stock' : 'Nouveau stock' }}
           </h1>
           <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            {{ stock?.id ? 'Mettre à jour les informations du stock' : 'Ajouter un nouvel élément en stock' }}
+            {{
+              stock?.id
+                ? 'Mettre à jour les informations du stock'
+                : 'Ajouter un nouvel élément en stock'
+            }}
           </p>
         </div>
       </div>
     </div>
 
     <!-- Form -->
-    <div class="bg-white dark:bg-gray-800 shadow-card-hover rounded-xl border border-gray-200 dark:border-gray-700">
+    <div
+      class="bg-white dark:bg-gray-800 shadow-card-hover rounded-xl border border-gray-200 dark:border-gray-700"
+    >
       <form @submit.prevent="submit" class="p-8 space-y-8">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
           <!-- Élément -->
@@ -38,7 +44,9 @@
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.element }"
               placeholder="Ex: Papier toilette, Serviettes..."
             />
-            <p v-if="form.errors.element" class="mt-2 text-sm text-red-600">{{ form.errors.element }}</p>
+            <p v-if="form.errors.element" class="mt-2 text-sm text-red-600">
+              {{ form.errors.element }}
+            </p>
           </div>
 
           <!-- Appartement -->
@@ -57,7 +65,9 @@
                 {{ apt.name }}
               </option>
             </select>
-            <p v-if="form.errors.appartement_id" class="mt-2 text-sm text-red-600">{{ form.errors.appartement_id }}</p>
+            <p v-if="form.errors.appartement_id" class="mt-2 text-sm text-red-600">
+              {{ form.errors.appartement_id }}
+            </p>
           </div>
 
           <!-- Quantité mensuelle -->
@@ -75,8 +85,12 @@
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.quantite_mois }"
               placeholder="0"
             />
-            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Quantité prévue pour le mois</p>
-            <p v-if="form.errors.quantite_mois" class="mt-2 text-sm text-red-600">{{ form.errors.quantite_mois }}</p>
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Quantité prévue pour le mois
+            </p>
+            <p v-if="form.errors.quantite_mois" class="mt-2 text-sm text-red-600">
+              {{ form.errors.quantite_mois }}
+            </p>
           </div>
 
           <!-- Quantité utilisée -->
@@ -96,7 +110,9 @@
               placeholder="0"
             />
             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Quantité déjà consommée</p>
-            <p v-if="form.errors.utilise" class="mt-2 text-sm text-red-600">{{ form.errors.utilise }}</p>
+            <p v-if="form.errors.utilise" class="mt-2 text-sm text-red-600">
+              {{ form.errors.utilise }}
+            </p>
           </div>
 
           <!-- Seuil d'alerte -->
@@ -114,8 +130,12 @@
               :class="{ 'border-red-500 focus:ring-red-500': form.errors.seuil }"
               placeholder="0"
             />
-            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Alerte quand le stock restant atteint ce seuil</p>
-            <p v-if="form.errors.seuil" class="mt-2 text-sm text-red-600">{{ form.errors.seuil }}</p>
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Alerte quand le stock restant atteint ce seuil
+            </p>
+            <p v-if="form.errors.seuil" class="mt-2 text-sm text-red-600">
+              {{ form.errors.seuil }}
+            </p>
           </div>
 
           <!-- Calculs automatiques -->
@@ -133,11 +153,17 @@
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-600 dark:text-gray-400">Statut:</span>
-                <span v-if="needsRestock" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning-100 text-warning-800 dark:bg-warning-900/50 dark:text-warning-300">
+                <span
+                  v-if="needsRestock"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning-100 text-warning-800 dark:bg-warning-900/50 dark:text-warning-300"
+                >
                   <ExclamationTriangleIcon class="h-3 w-3 mr-1" />
                   À racheter
                 </span>
-                <span v-else class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900/50 dark:text-success-300">
+                <span
+                  v-else
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900/50 dark:text-success-300"
+                >
                   <CheckCircleIcon class="h-3 w-3 mr-1" />
                   Stock OK
                 </span>
@@ -148,22 +174,26 @@
 
         <!-- Actions -->
         <div class="flex justify-end space-x-4 pt-8 border-t border-gray-200 dark:border-gray-700">
-          <Link
-            :href="route('stocks.index')"
-            class="btn btn-secondary"
-          >
+          <Link :href="route('stocks.index')" class="btn btn-secondary">
             <XMarkIcon class="w-4 h-4 mr-2" />
             Annuler
           </Link>
-          <button
-            type="submit"
-            :disabled="form.processing"
-            class="btn btn-primary"
-          >
+          <button type="submit" :disabled="form.processing" class="btn btn-primary">
             <CheckIcon v-if="!form.processing" class="w-4 h-4 mr-2" />
             <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
             </svg>
             {{ form.processing ? 'Enregistrement...' : 'Enregistrer' }}
           </button>
@@ -186,7 +216,7 @@ import {
   CalculatorIcon,
   CheckCircleIcon,
   XMarkIcon,
-  CheckIcon
+  CheckIcon,
 } from '@heroicons/vue/24/outline'
 import AppLayout from '@/Layouts/AppLayout.vue'
 
@@ -212,9 +242,7 @@ const needsRestock = computed(() => {
 })
 
 const submit = () => {
-  const url = props.stock?.id
-    ? route('stocks.update', props.stock.id)
-    : route('stocks.store')
+  const url = props.stock?.id ? route('stocks.update', props.stock.id) : route('stocks.store')
 
   const method = props.stock?.id ? 'put' : 'post'
 

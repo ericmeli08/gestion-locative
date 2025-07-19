@@ -28,7 +28,7 @@ class ChargeMensuelleController extends Controller
         $charges = $query->latest('date_paiement')->paginate(15)->withQueryString();
         $apartments = Appartement::all();
 
-        return Inertia::render('Charges/Index', [
+        return Inertia::render('ChargesMensuelles/Index', [
             'charges' => $charges,
             'apartments' => $apartments,
             'filters' => $request->only(['search', 'apartment', 'recurrent']),
@@ -39,7 +39,7 @@ class ChargeMensuelleController extends Controller
     {
         $apartments = Appartement::all();
 
-        return Inertia::render('Charges/Form', [
+        return Inertia::render('ChargesMensuelles/Form', [
             'apartments' => $apartments,
         ]);
     }
@@ -65,7 +65,7 @@ class ChargeMensuelleController extends Controller
     {
         $apartments = Appartement::all();
 
-        return Inertia::render('Charges/Form', [
+        return Inertia::render('ChargesMensuelles/Form', [
             'charge' => $charge,
             'apartments' => $apartments,
         ]);

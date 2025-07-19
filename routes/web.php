@@ -72,6 +72,12 @@ Route::middleware(['auth', 'verified', 'locale'])->group(function () {
     // Disponibilités
     Route::resource('disponibilites', DisponibiliteController::class);
 
+
+    // Reports
+    Route::get('/reports/monthly', [App\Http\Controllers\ReportController::class, 'monthly'])->name('reports.monthly');
+    Route::get('/reports/occupancy', [App\Http\Controllers\ReportController::class, 'occupancy'])->name('reports.occupancy');
+
+
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

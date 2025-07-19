@@ -25,7 +25,10 @@
     </div>
 
     <!-- Alertes de stock -->
-    <div v-if="lowStockItems.length > 0" class="mb-6 bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-800 rounded-xl p-6">
+    <div
+      v-if="lowStockItems.length > 0"
+      class="mb-6 bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-800 rounded-xl p-6"
+    >
       <div class="flex items-center mb-4">
         <ExclamationTriangleIcon class="h-6 w-6 text-warning-600 dark:text-warning-400 mr-2" />
         <h3 class="text-lg font-medium text-warning-800 dark:text-warning-200">
@@ -45,10 +48,7 @@
                 Reste: {{ item.reste }} / {{ item.quantite_mois }}
               </p>
             </div>
-            <Link
-              :href="route('stocks.edit', item.id)"
-              class="btn btn-warning btn-sm"
-            >
+            <Link :href="route('stocks.edit', item.id)" class="btn btn-warning btn-sm">
               Réapprovisionner
             </Link>
           </div>
@@ -57,7 +57,9 @@
     </div>
 
     <!-- Filters -->
-    <div class="mb-6 bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+    <div
+      class="mb-6 bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700"
+    >
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -115,27 +117,41 @@
     </div>
 
     <!-- Stocks table -->
-    <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+    <div
+      class="bg-white dark:bg-gray-800 shadow-card rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700"
+    >
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead class="bg-gray-50 dark:bg-gray-900">
             <tr>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Élément
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Appartement
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Stock initial
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Utilisé
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Reste
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Statut
               </th>
               <th class="relative px-6 py-4">
@@ -159,7 +175,10 @@
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                <span v-if="stock.appartement" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/50 dark:text-primary-300">
+                <span
+                  v-if="stock.appartement"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/50 dark:text-primary-300"
+                >
                   {{ stock.appartement.name }}
                 </span>
                 <span v-else class="text-gray-400">Général</span>
@@ -171,16 +190,28 @@
                 {{ stock.utilise }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">
-                <span :class="stock.a_racheter ? 'text-warning-600 dark:text-warning-400' : 'text-gray-900 dark:text-white'">
+                <span
+                  :class="
+                    stock.a_racheter
+                      ? 'text-warning-600 dark:text-warning-400'
+                      : 'text-gray-900 dark:text-white'
+                  "
+                >
                   {{ stock.reste }}
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span v-if="stock.a_racheter" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning-100 text-warning-800 dark:bg-warning-900/50 dark:text-warning-300">
+                <span
+                  v-if="stock.a_racheter"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning-100 text-warning-800 dark:bg-warning-900/50 dark:text-warning-300"
+                >
                   <ExclamationTriangleIcon class="h-3 w-3 mr-1" />
                   À racheter
                 </span>
-                <span v-else class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900/50 dark:text-success-300">
+                <span
+                  v-else
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900/50 dark:text-success-300"
+                >
                   <CheckCircleIcon class="h-3 w-3 mr-1" />
                   OK
                 </span>
@@ -207,7 +238,9 @@
       </div>
 
       <!-- Pagination -->
-      <div class="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6">
+      <div
+        class="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6"
+      >
         <Pagination :links="stocks.links" />
       </div>
     </div>
@@ -226,7 +259,7 @@ import {
   ArrowPathIcon,
   PencilIcon,
   TrashIcon,
-  CheckCircleIcon
+  CheckCircleIcon,
 } from '@heroicons/vue/24/outline'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Pagination from '@/Components/Pagination.vue'
@@ -244,19 +277,23 @@ const filters = reactive({
 })
 
 const lowStockItems = computed(() => {
-  return props.stocks.data.filter(stock => stock.a_racheter)
+  return props.stocks.data.filter((stock) => stock.a_racheter)
 })
 
 // Watch for filter changes and update URL
-watch(filters, (newFilters) => {
-  router.get(route('stocks.index'), newFilters, {
-    preserveState: true,
-    replace: true,
-  })
-}, { debounce: 300 })
+watch(
+  filters,
+  (newFilters) => {
+    router.get(route('stocks.index'), newFilters, {
+      preserveState: true,
+      replace: true,
+    })
+  },
+  { debounce: 300 }
+)
 
 const resetFilters = () => {
-  Object.keys(filters).forEach(key => {
+  Object.keys(filters).forEach((key) => {
     filters[key] = ''
   })
 }

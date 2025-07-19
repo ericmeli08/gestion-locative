@@ -15,7 +15,9 @@
 
     <div class="space-y-8">
       <!-- Préférences générales -->
-      <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl border border-gray-200 dark:border-gray-700">
+      <div
+        class="bg-white dark:bg-gray-800 shadow-card rounded-xl border border-gray-200 dark:border-gray-700"
+      >
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <h2 class="text-lg font-medium text-gray-900 dark:text-white">
             <UserCircleIcon class="inline h-5 w-5 mr-2" />
@@ -34,7 +36,9 @@
                 Choisissez votre langue préférée
               </p>
             </div>
-            <select class="rounded-lg py-2 px-4 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500">
+            <select
+              class="rounded-lg py-2 px-4 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
+            >
               <option value="fr">Français</option>
               <option value="en">English</option>
             </select>
@@ -61,9 +65,7 @@
                 <BellIcon class="inline h-4 w-4 mr-2" />
                 Notifications par email
               </label>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                Recevez des alertes par email
-              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Recevez des alertes par email</p>
             </div>
             <input
               type="checkbox"
@@ -75,7 +77,9 @@
       </div>
 
       <!-- Paramètres de stock -->
-      <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl border border-gray-200 dark:border-gray-700">
+      <div
+        class="bg-white dark:bg-gray-800 shadow-card rounded-xl border border-gray-200 dark:border-gray-700"
+      >
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <h2 class="text-lg font-medium text-gray-900 dark:text-white">
             <CubeIcon class="inline h-5 w-5 mr-2" />
@@ -123,7 +127,9 @@
       </div>
 
       <!-- Paramètres financiers -->
-      <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl border border-gray-200 dark:border-gray-700">
+      <div
+        class="bg-white dark:bg-gray-800 shadow-card rounded-xl border border-gray-200 dark:border-gray-700"
+      >
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <h2 class="text-lg font-medium text-gray-900 dark:text-white">
             <CurrencyEuroIcon class="inline h-5 w-5 mr-2" />
@@ -142,7 +148,9 @@
                 Devise utilisée pour tous les montants
               </p>
             </div>
-            <select class="rounded-lg py-2 px-4 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500">
+            <select
+              class="rounded-lg py-2 px-4 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
+            >
               <option value="EUR">Euro (€)</option>
               <option value="USD">Dollar ($)</option>
               <option value="GBP">Livre (£)</option>
@@ -156,11 +164,11 @@
                 <CalendarIcon class="inline h-4 w-4 mr-2" />
                 Format de date
               </label>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                Format d'affichage des dates
-              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Format d'affichage des dates</p>
             </div>
-            <select class="rounded-lg py-2 px-4 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500">
+            <select
+              class="rounded-lg py-2 px-4 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
+            >
               <option value="dd/mm/yyyy">DD/MM/YYYY</option>
               <option value="mm/dd/yyyy">MM/DD/YYYY</option>
               <option value="yyyy-mm-dd">YYYY-MM-DD</option>
@@ -170,7 +178,9 @@
       </div>
 
       <!-- Sauvegarde et export -->
-      <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl border border-gray-200 dark:border-gray-700">
+      <div
+        class="bg-white dark:bg-gray-800 shadow-card rounded-xl border border-gray-200 dark:border-gray-700"
+      >
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <h2 class="text-lg font-medium text-gray-900 dark:text-white">
             <DocumentArrowDownIcon class="inline h-5 w-5 mr-2" />
@@ -230,7 +240,7 @@
   </AppLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
   Cog6ToothIcon,
   UserCircleIcon,
@@ -245,7 +255,7 @@ import {
   DocumentArrowDownIcon,
   CloudArrowUpIcon,
   ArrowPathIcon,
-  CheckIcon
+  CheckIcon,
 } from '@heroicons/vue/24/outline'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import ThemeToggle from '@/Components/ThemeToggle.vue'

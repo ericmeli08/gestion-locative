@@ -1,27 +1,24 @@
 <template>
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-        <!-- Sidebar -->
-        <AppSidebar 
-            :is-open="sidebarOpen" 
-            @close="sidebarOpen = false"
-        />
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <!-- Sidebar -->
+    <AppSidebar :is-open="sidebarOpen" @close="sidebarOpen = false" />
 
-        <!-- Main content -->
-        <div class="lg:pl-64">
-            <!-- Header -->
-            <AppHeader @toggle-sidebar="sidebarOpen = !sidebarOpen" />
+    <!-- Main content -->
+    <div class="lg:pl-64">
+      <!-- Header -->
+      <AppHeader @toggle-sidebar="sidebarOpen = !sidebarOpen" />
 
-            <!-- Page content -->
-            <main class="py-6">
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <slot />
-                </div>
-            </main>
+      <!-- Page content -->
+      <main class="py-6">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <slot />
         </div>
-
-        <!-- Notifications -->
-        <NotificationsDropdown />
+      </main>
     </div>
+
+    <!-- Notifications -->
+    <NotificationsDropdown />
+  </div>
 </template>
 
 <script setup>

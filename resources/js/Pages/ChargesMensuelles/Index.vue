@@ -25,7 +25,9 @@
     </div>
 
     <!-- Filters -->
-    <div class="mb-6 bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+    <div
+      class="mb-6 bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700"
+    >
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -84,24 +86,36 @@
     </div>
 
     <!-- Charges table -->
-    <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+    <div
+      class="bg-white dark:bg-gray-800 shadow-card rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700"
+    >
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead class="bg-gray-50 dark:bg-gray-900">
             <tr>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Service
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Appartement
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Date de paiement
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Montant
               </th>
-              <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              >
                 Type
               </th>
               <th class="relative px-6 py-4">
@@ -119,12 +133,18 @@
                 <div class="text-sm font-medium text-gray-900 dark:text-white">
                   {{ charge.service }}
                 </div>
-                <div v-if="charge.notes" class="text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs">
+                <div
+                  v-if="charge.notes"
+                  class="text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs"
+                >
                   {{ charge.notes }}
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                <span v-if="charge.appartement" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/50 dark:text-primary-300">
+                <span
+                  v-if="charge.appartement"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/50 dark:text-primary-300"
+                >
                   {{ charge.appartement.name }}
                 </span>
                 <span v-else class="text-gray-400">Général</span>
@@ -133,15 +153,23 @@
                 <CalendarIcon class="inline h-4 w-4 mr-2 text-gray-400" />
                 {{ formatDate(charge.date_paiement) }}
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white"
+              >
                 {{ formatCurrency(charge.montant) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span v-if="charge.recurrent" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900/50 dark:text-success-300">
+                <span
+                  v-if="charge.recurrent"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900/50 dark:text-success-300"
+                >
                   <ArrowPathIcon class="h-3 w-3 mr-1" />
                   Récurrente
                 </span>
-                <span v-else class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <span
+                  v-else
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                >
                   Ponctuelle
                 </span>
               </td>
@@ -167,7 +195,9 @@
       </div>
 
       <!-- Pagination -->
-      <div class="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6">
+      <div
+        class="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6"
+      >
         <Pagination :links="charges.links" />
       </div>
     </div>
@@ -185,7 +215,7 @@ import {
   ArrowPathIcon,
   CalendarIcon,
   PencilIcon,
-  TrashIcon
+  TrashIcon,
 } from '@heroicons/vue/24/outline'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Pagination from '@/Components/Pagination.vue'
@@ -203,15 +233,19 @@ const filters = reactive({
 })
 
 // Watch for filter changes and update URL
-watch(filters, (newFilters) => {
-  router.get(route('charges.index'), newFilters, {
-    preserveState: true,
-    replace: true,
-  })
-}, { debounce: 300 })
+watch(
+  filters,
+  (newFilters) => {
+    router.get(route('charges.index'), newFilters, {
+      preserveState: true,
+      replace: true,
+    })
+  },
+  { debounce: 300 }
+)
 
 const resetFilters = () => {
-  Object.keys(filters).forEach(key => {
+  Object.keys(filters).forEach((key) => {
     filters[key] = ''
   })
 }
@@ -229,7 +263,7 @@ const formatDate = (date) => {
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
-    currency: 'EUR'
+    currency: 'EUR',
   }).format(amount)
 }
 </script>
