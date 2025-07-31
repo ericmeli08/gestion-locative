@@ -21,6 +21,7 @@ class Appartement extends Model
     protected $casts = [
         'active' => 'boolean',
         'surface' => 'decimal:2',
+        'capacity' => 'integer',
     ];
 
     public function reservations()
@@ -56,5 +57,27 @@ class Appartement extends Model
     public function degatReparations()
     {
         return $this->hasMany(DegatReparation::class);
+    }
+
+        // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
+
+    public function scopeInactive($query)
+    {
+        return $query->where('active', false);
+    }
+
+      // Accessors
+    public function getStatusTextAttribute()
+    {
+        return $this->active ? 'Actif' : 'Inactif';
+    }
+
+    public function getSurfaceFormattedAttribute()
+    {
+        return $this->surface ? $this->surface . ' m²' : null;
     }
 }

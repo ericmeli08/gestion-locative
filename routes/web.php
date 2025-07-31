@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\AppartementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReservationController;
@@ -12,7 +13,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
-
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -25,15 +26,15 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -50,56 +51,55 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-Route::middleware(['auth', 'verified', 'locale'])->group(function () {
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::group(
+    [
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'web', 'auth', 'verified', 'locale'],
+    ],
+    function () {
+        // Dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Reservations
-    Route::resource('reservations', ReservationController::class);
+        // Reservations
+        Route::resource('reservations', ReservationController::class);
 
-    // Dépenses
-    Route::resource('depenses', DepenseController::class);
+        // Dépenses
+        Route::resource('depenses', DepenseController::class);
 
-    // Charges mensuelles
-    Route::resource('charges', ChargeMensuelleController::class);
+        // Charges mensuelles
+        Route::resource('charges', ChargeMensuelleController::class);
 
-    // Stocks
-    Route::resource('stocks', StockController::class);
+        // Stocks
+        Route::resource('stocks', StockController::class);
 
-    // Dégâts et réparations
-    Route::resource('degats', DegatReparationController::class);
+        // Dégâts et réparations
+        Route::resource('degats', DegatReparationController::class);
 
-    // Disponibilités
-    Route::resource('disponibilites', DisponibiliteController::class);
+        // Disponibilités
+        Route::resource('disponibilites', DisponibiliteController::class);
 
-    // Reports
-    Route::get('/reports/monthly', [App\Http\Controllers\ReportController::class, 'monthly'])->name('reports.monthly');
-    Route::get('/reports/occupancy', [App\Http\Controllers\ReportController::class, 'occupancy'])->name('reports.occupancy');
+        // appartements
+        Route::resource('appartements', AppartementController::class);
+        Route::patch('appartements/{appartement}/toggle-status', [AppartementController::class, 'toggleStatus'])->name('appartements.toggle-status');
 
+        // Reports
+        Route::get('/reports/monthly', [App\Http\Controllers\ReportController::class, 'monthly'])->name('reports.monthly');
+        Route::get('/reports/occupancy', [App\Http\Controllers\ReportController::class, 'occupancy'])->name('reports.occupancy');
 
-    // Profile
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        // Profile
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Settings
-    Route::get('/settings', function () {
-        return Inertia::render('Settings');
-    })->name('settings');
+        // Settings
+        Route::get('/settings', function () {
+            return Inertia::render('Settings');
+        })->name('settings');
 
-    // // Reports
-    // Route::get('/reports/monthly', function () {
-    //     return Inertia::render('Reports/Monthly');
-    // })->name('reports.monthly');
-
-    // Route::get('/reports/occupancy', function () {
-    //     return Inertia::render('Reports/Occupancy');
-    // })->name('reports.occupancy');
-
-    // Language switching
-    Route::post('/language', [LanguageController::class, 'switch'])->name('language.switch');
-});
-
+        // Language switching
+        Route::post('/language', [LanguageController::class, 'switch'])->name('language.switch');
+    },
+);
 
 // Theme switching
 Route::post('/user/theme', function () {
@@ -113,5 +113,4 @@ Route::post('/notifications/mark-all-read', function () {
     return response()->json(['success' => true]);
 })->name('notifications.mark-all-read');
 
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

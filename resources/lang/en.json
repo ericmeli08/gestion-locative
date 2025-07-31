@@ -61,6 +61,7 @@
     "navigation": {
         "dashboard": "Dashboard",
         "reservations": "Reservations",
+        "appartements" : "Apartments",
         "expenses": "Expenses",
         "monthly_charges": "Monthly Charges",
         "stocks": "Stocks",
@@ -109,5 +110,37 @@
         "just_now": "Just now",
         "hours_ago": ":count hour ago|:count hours ago",
         "days_ago": ":count day ago|:count days ago"
+    },
+    "appartement" : {
+        "created" : "Apartment created successfully.",
+        "updated" : "Apartment updated successfully.",
+        "deleted" : "Apartment deleted successfully.",
+        "status_updated" : "Apartment status updated successfully.",
+        "delete_confirm" : "Are you sure you want to delete this apartment?",
+        "activate_confirm" : "Are you sure you want to activate this apartment?",
+        "deactivate_confirm" : "Are you sure you want to deactivate this apartment?",
+        "name" : {
+            "required" : "The apartment name is required.",
+            "unique" : "This apartment name already exists.",
+            "max" : "The name cannot exceed 255 characters."
+        },
+        "description" : {
+            "max" : "The description cannot exceed 1000 characters."
+        },
+        "address" : {
+            "required" : "The address is required.",
+            "max" : "The address cannot exceed 255 characters."
+        },
+        "capacity" : {
+            "required" : "The capacity is required.",
+            "integer" : "The capacity must be an integer.",
+            "min" : "The capacity must be at least 1 person.",
+            "max" : "The capacity cannot exceed 50 people."
+        },
+        "surface" : {
+            "numeric" : "The surface must be a number.",
+            "min" : "The surface cannot be negative.",
+            "max" : "The surface cannot exceed 999999.99 m²."
+        }
     }
 }

@@ -23,6 +23,7 @@ class UpdateReservationRequest extends FormRequest
             'date_sortie' => 'required|date|after:date_entree',
             'statut_paiement' => 'required|in:paid,unpaid',
             'date_paiement' => 'nullable|date|required_if:statut_paiement,paid',
+            'id_reservation' => 'required'
         ];
     }
 
@@ -37,7 +38,9 @@ class UpdateReservationRequest extends FormRequest
             return;
         }
 
+        $reservationId = $this->input('id_reservation');
         $conflict = Reservation::where('appartement_id', $appartementId)
+            ->where('id', '!=', $reservationId)
             ->where(function ($query) use ($start, $end) {
                 $query->whereBetween('date_entree', [$start, $end])
                       ->orWhereBetween('date_sortie', [$start, $end])

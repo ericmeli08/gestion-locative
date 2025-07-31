@@ -64,6 +64,7 @@
         "expenses": "Dépenses",
         "monthly_charges": "Charges mensuelles",
         "stocks": "Stocks",
+        "appartements" : "Appartements",
         "repairs": "Réparations",
         "availability": "Disponibilités",
         "reports": "Rapports",
@@ -109,5 +110,37 @@
         "just_now": "À l'instant",
         "hours_ago": "Il y a :count heure|Il y a :count heures",
         "days_ago": "Il y a :count jour|Il y a :count jours"
+    },
+    "appartement" : {
+        "created" : "Appartement créé avec succès.",
+        "updated" : "Appartement modifié avec succès.",
+        "deleted" : "Appartement supprimé avec succès.",
+        "status_updated" : "Statut de l\"appartement modifié avec succès.",
+        "delete_confirm" : "Êtes-vous sûr de vouloir supprimer cet appartement ?",
+        "activate_confirm" : "Êtes-vous sûr de vouloir activer cet appartement ?",
+        "deactivate_confirm" : "Êtes-vous sûr de vouloir désactiver cet appartement ?",
+        "name" : {
+            "required" : "Le nom de l'appartement est obligatoire.",
+            "unique" : "Ce nom d'appartement existe déjà.",
+            "max" : "Le nom ne peut pas dépasser 255 caractères."
+        },
+        "description" : {
+            "max" : "La description ne peut pas dépasser 1000 caractères."
+        },
+        "address" : {
+            "required" : "L'adresse est obligatoire.",
+            "max" : "L\"adresse ne peut pas dépasser 255 caractères."
+        },
+        "capacity" : {
+            "required" : "La capacité est obligatoire.",
+            "integer" : "La capacité doit être un nombre entier.",
+            "min" : "La capacité doit être d'au moins 1 personne.",
+            "max" : "La capacité ne peut pas dépasser 50 personnes."
+        },
+        "surface" : {
+            "numeric" : "La surface doit être un nombre.",
+            "min" : "La surface ne peut pas être négative.",
+            "max" : "La surface ne peut pas dépasser 999999.99 m²."
+        }
     }
 }

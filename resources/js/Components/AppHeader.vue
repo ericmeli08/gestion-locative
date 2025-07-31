@@ -122,7 +122,7 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'

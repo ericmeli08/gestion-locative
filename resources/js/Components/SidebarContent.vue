@@ -55,6 +55,14 @@
               {{ $t('navigation.stocks') }}
             </SidebarItem>
 
+            <SidebarItem
+              :href="route('appartements.index')"
+              :icon="BuildingOffice2Icon"
+              :active="$page.component.startsWith('Appartement')"
+            >
+              {{ $t('navigation.appartements') }}
+            </SidebarItem>
+
             <!-- :href="'#'" -->
             <SidebarItem
               :href="route('degats.index')"
@@ -123,6 +131,7 @@ import {
   CreditCardIcon,
   CubeIcon,
   WrenchScrewdriverIcon,
+  BuildingOffice2Icon,
   CalendarIcon,
   ChartBarIcon,
   PresentationChartLineIcon,

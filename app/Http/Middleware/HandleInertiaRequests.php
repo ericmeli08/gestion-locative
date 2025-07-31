@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
@@ -53,10 +54,18 @@ class HandleInertiaRequests extends Middleware
             ],
             'locale' => app()->getLocale(),
             'translations' => $this->getTranslations(),
+            'locales' => config('app.available_locales'),
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
                     'location' => $request->url(),
                 ]);
+            },
+            'localizedUrls' => function () {
+                return collect(config('app.available_locales'))
+                    ->mapWithKeys(function ($lang) {
+                        return [$lang => LaravelLocalization::getLocalizedURL($lang)];
+                    })
+                    ->all();
             },
         ]);
     }
@@ -66,7 +75,8 @@ class HandleInertiaRequests extends Middleware
      */
     private function getTranslations(): array
     {
-        $locale = app()->getLocale();
+        // $locale = app()->getLocale();
+        $locale = 'fr';
         $path = resource_path("lang/{$locale}.json");
 
         if (file_exists($path)) {

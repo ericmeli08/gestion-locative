@@ -49,11 +49,11 @@
 
                 <div class="flex items-center space-x-2">
                     <div class="flex items-center space-x-1">
-                        <div class="w-4 h-4 bg-success-500 rounded"></div>
+                        <div class="w-4 h-4 bg-success-500 dark:bg-green-200 rounded"></div>
                         <span class="text-sm text-gray-600 dark:text-gray-400">Disponible</span>
                     </div>
                     <div class="flex items-center space-x-1">
-                        <div class="w-4 h-4 bg-primary-500 rounded"></div>
+                        <div class="w-4 h-4 bg-primary-500 dark:bg-blue-600 rounded"></div>
                         <span class="text-sm text-gray-600 dark:text-gray-400">Occupé</span>
                     </div>
                     <!-- <div class="flex items-center space-x-1">
@@ -171,14 +171,14 @@
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     Prix par nuit
                                 </label>
-                                <p class="text-sm text-gray-900 dark:text-white">{{ modalData.prix_nuit }}€</p>
+                                <p class="text-sm text-gray-900 dark:text-white">{{ modalData.prix_nuit }}F CFA</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     Revenus totaux
                                 </label>
                                 <p class="text-sm text-gray-900 dark:text-white font-semibold">{{
-                                    modalData.revenus_totaux }}€</p>
+                                    modalData.revenus_totaux }}F CFA</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -309,8 +309,8 @@ const calendarDays = computed(() => {
 const getAvailableClasses = (valid: boolean) => {
     const baseClasses = 'border-gray-200 dark:border-gray-600'
     const statusClasses = valid ?
-        'bg-success-100 text-success-800 border-success-300 hover:bg-success-200 dark:bg-success-900/50 dark:text-success-300 dark:border-success-700'
-        : 'bg-primary-100 text-primary-800 border-primary-300 hover:bg-primary-200 dark:bg-primary-900/50 dark:text-primary-300 dark:border-primary-700'
+        'bg-green-300 text-success-900 border-success-300 hover:bg-success-500 dark:bg-green-200 dark:text-success-300 dark:border-success-700'
+        : 'bg-primary-100 text-primary-800 border-primary-300 hover:bg-primary-200 dark:bg-blue-900/50 dark:text-primary-300 dark:border-primary-700'
 
     return `${baseClasses} ${statusClasses}`
 }

@@ -199,6 +199,7 @@ const form = useForm({
     date_sortie: props.reservation?.date_sortie ? formatDate(props.reservation?.date_sortie) : '',
     statut_paiement: props.reservation?.statut_paiement || 'unpaid',
     date_paiement: props.reservation?.date_paiement ? formatDate(props.reservation?.date_paiement) : '',
+    id_reservation: null,
 })
 const isPaid = ref(props.reservation?.statut_paiement === 'paid')
 
@@ -229,7 +230,7 @@ const submit = () => {
     const url = props.reservation?.id
         ? route('reservations.update', props.reservation.id)
         : route('reservations.store')
-
+    form.id_reservation = props.reservation?.id ? props.reservation?.id : null
     const method = props.reservation?.id ? 'put' : 'post'
 
     form[method](url,{

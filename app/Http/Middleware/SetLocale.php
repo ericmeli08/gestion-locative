@@ -5,7 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Session;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
+
 
 class SetLocale
 {
@@ -22,6 +24,7 @@ class SetLocale
 
         if (in_array($locale, config('app.available_locales', ['fr', 'en']))) {
             App::setLocale($locale);
+            LaravelLocalization::setLocale($locale);
         }
 
         return $next($request);
