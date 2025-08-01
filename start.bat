@@ -1,4 +1,5 @@
 @echo off
-cd /d %~dp0
-start http://localhost:8000
-docker-compose up --build
+echo Lancement de l'application Laravel...
+docker compose up --build
+pause
+

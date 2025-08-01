@@ -1,18 +1,31 @@
-FROM php:8.3-cli
+# Dockerfile
 
-# Installer extensions nécessaires (SQLite, zip, etc.)
+FROM php:8.2-fpm
+
+# Installer les dépendances système
 RUN apt-get update && apt-get install -y \
-    sqlite3 libsqlite3-dev unzip zip curl git libzip-dev \
-    && docker-php-ext-install pdo pdo_sqlite zip
+    git curl libzip-dev unzip sqlite3 libsqlite3-dev npm
 
-# Installer Composer (récupéré depuis une autre image officielle)
+# Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Définir le dossier de travail dans le conteneur
+# Installer les extensions PHP nécessaires
+RUN docker-php-ext-install pdo pdo_sqlite zip
+
+# Créer un utilisateur non-root
+RUN useradd -G www-data,root -u 1000 -d /home/laravel laravel && \
+    mkdir -p /home/laravel && chown -R laravel:laravel /home/laravel
+
+# Définir le dossier de travail
 WORKDIR /var/www
 
-# Copier tout le code source dans le conteneur
+# Copier les fichiers
 COPY . .
 
-# Installer les dépendances PHP
-RUN composer install
+# Installer les dépendances Laravel et JS
+RUN composer install && npm install && npm run build && php artisan migrate:fresh --seed
+
+# Donner les bonnes permissions
+RUN chown -R laravel:www-data /var/www
+
+USER laravel
