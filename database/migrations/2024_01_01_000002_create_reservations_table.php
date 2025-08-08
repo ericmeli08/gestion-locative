@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->date('date_entree');
-            $table->date('date_sortie');
+            $table->dateTime('date_entree');
+            $table->dateTime('date_sortie');
             $table->string('client');
             $table->string('email')->nullable();
             $table->string('telephone')->nullable();
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('prix_nuit', 8, 2);
             $table->integer('nombre_nuits');
             $table->decimal('revenus_totaux', 10, 2);
-            $table->date('date_paiement')->nullable();
+            $table->dateTime('date_paiement')->nullable();
             $table->enum('statut_paiement', ['paid', 'unpaid', 'partial'])->default('unpaid');
             $table->text('notes')->nullable();
             $table->timestamps();

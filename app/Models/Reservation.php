@@ -10,26 +10,12 @@ class Reservation extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'date_entree',
-        'date_sortie',
-        'client',
-        'email',
-        'telephone',
-        'plateforme',
-        'appartement_id',
-        'prix_nuit',
-        'nombre_nuits',
-        'revenus_totaux',
-        'date_paiement',
-        'statut_paiement',
-        'notes',
-    ];
+    protected $fillable = ['date_entree', 'date_sortie', 'client', 'email', 'telephone', 'plateforme', 'appartement_id', 'prix_nuit', 'nombre_nuits', 'revenus_totaux', 'date_paiement', 'statut_paiement', 'notes'];
 
     protected $casts = [
-        'date_entree' => 'date',
-        'date_sortie' => 'date',
-        'date_paiement' => 'date',
+        'date_entree' => 'datetime',
+        'date_sortie' => 'datetime',
+        'date_paiement' => 'datetime',
         'prix_nuit' => 'decimal:2',
         'revenus_totaux' => 'decimal:2',
     ];

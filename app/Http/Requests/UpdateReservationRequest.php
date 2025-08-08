@@ -52,8 +52,8 @@ class UpdateReservationRequest extends FormRequest
             ->first();
 
         if ($conflict) {
-            $periode = 'du ' . date('d/m/Y', strtotime($conflict->date_entree)) .
-                       ' au ' . date('d/m/Y', strtotime($conflict->date_sortie));
+            $periode = 'du ' . date('d/m/Y H:i', strtotime($conflict->date_entree)) .
+                       ' au ' . date('d/m/Y H:i', strtotime($conflict->date_sortie));
 
             $validator->errors()->add('date_entree', "L'appartement est déjà réservé $periode.");
         }

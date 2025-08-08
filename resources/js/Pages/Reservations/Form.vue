@@ -81,7 +81,7 @@
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             {{ $t('reservations.fields.check_in') }}
                         </label>
-                        <input v-model="form.date_entree" type="date" required
+                        <input v-model="form.date_entree" type="datetime-local" required
                             class="block input-field w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
                             :class="{ 'border-red-500': errors?.date_entree }" />
                         <p v-if="errors?.date_entree" class="mt-1 text-sm text-red-600">
@@ -94,7 +94,7 @@
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             {{ $t('reservations.fields.check_out') }}
                         </label>
-                        <input v-model="form.date_sortie" type="date" required
+                        <input v-model="form.date_sortie" type="datetime-local" required
                             class="block input-field w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
                             :class="{ 'border-red-500': errors?.date_sortie }" />
                         <p v-if="errors?.date_sortie" class="mt-1 text-sm text-red-600">
@@ -148,7 +148,7 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         {{ $t('reservations.fields.payment_date') }}
                     </label>
-                    <input v-model="form.date_paiement" type="date"
+                    <input v-model="form.date_paiement" type="datetime-local"
                         class="block w-full input-field rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
                         :class="{ 'border-red-500': errors?.date_paiement }" />
                     <p v-if="errors?.date_paiement" class="mt-1 text-sm text-red-600">
@@ -179,7 +179,7 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import { useI18n } from '@/Composables/useI18n'
 import dayjs from 'dayjs'
 
-const formatDate = (isoString) => isoString? dayjs(isoString).format('YYYY-MM-DD'): dayjs().format('YYYY-MM-DD')
+const formatDate = (isoString) => isoString? dayjs(isoString).format('YYYY-MM-DD HH:mm'): dayjs().format('YYYY-MM-DD HH:mm')
 
 const props = defineProps({
     reservation: Object,

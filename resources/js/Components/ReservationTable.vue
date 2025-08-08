@@ -59,7 +59,7 @@
               {{ formatDate(reservation.date_entree) }} - {{ formatDate(reservation.date_sortie) }}
             </div>
             <div class="text-xs text-gray-500 dark:text-gray-400">
-              {{ reservation.nombre_nuits }} {{ $t('common.nights') }}
+              {{ Number(reservation.nombre_nuits).toFixed(0) }} {{ $t('common.nights') }}
             </div>
           </td>
           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
@@ -137,8 +137,15 @@ const displayedReservations = computed(() => {
 })
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('fr-FR')
-}
+  return new Date(date).toLocaleString('fr-FR', {
+    timeZone: 'Africa/Douala',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('fr-FR', {

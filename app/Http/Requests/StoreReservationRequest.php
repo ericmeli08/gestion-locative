@@ -19,7 +19,7 @@ class StoreReservationRequest extends FormRequest
             'plateforme' => 'required|string|in:airbnb,booking,direct',
             'appartement_id' => 'required|exists:appartements,id',
             'prix_nuit' => 'required|numeric|min:0',
-            'date_entree' => 'required|date|after_or_equal:today',
+            'date_entree' => 'required|date',
             'date_sortie' => 'required|date|after:date_entree',
             'statut_paiement' => 'required|in:paid,unpaid',
             'date_paiement' => 'nullable|date|required_if:statut_paiement,paid',
@@ -38,7 +38,7 @@ class StoreReservationRequest extends FormRequest
             }
 
             $conflict = Reservation::where('appartement_id', $appartementId)
-                
+
                 ->where(function ($query) use ($start, $end) {
                     $query
                         ->whereBetween('date_entree', [$start, $end])
@@ -50,9 +50,9 @@ class StoreReservationRequest extends FormRequest
                 ->first();
 
             if ($conflict) {
-                $periode = 'du ' . date('d/m/Y', strtotime($conflict->date_entree)) . ' au ' . date('d/m/Y', strtotime($conflict->date_sortie));
+                $periode = 'du ' . date('d/m/Y H:i', strtotime($conflict->date_entree)) . ' au ' . date('d/m/Y', strtotime($conflict->date_sortie));
 
-                $validator->errors()->add('date_entree', "L'appartement est déjà réservé $periode.");
+                $validator->errors()->add('date_entree H:i', "L'appartement est déjà réservé $periode.");
             }
         });
     }
