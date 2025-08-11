@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Reservation;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 
 class UpdateReservationRequest extends FormRequest
 {
@@ -27,12 +28,33 @@ class UpdateReservationRequest extends FormRequest
         ];
     }
 
+    private function parseDate($value)
+{
+    $formats = [
+        'Y-m-d H:i',
+        'Y-m-d\TH:i',
+    ];
+
+    foreach ($formats as $format) {
+        try {
+            return Carbon::createFromFormat($format, $value);
+        } catch (\Exception $e) {
+            // On ignore et on teste le format suivant
+        }
+    }
+
+    throw new \Exception("Format de date invalide : {$value}");
+}
+
     public function withValidator($validator)
 {
     $validator->after(function ($validator) {
         $appartementId = $this->input('appartement_id');
-        $start = $this->input('date_entree');
-        $end = $this->input('date_sortie');
+        // dd($this->input('date_entree'), $this->input('date_sortie'));
+
+       $start = $this->parseDate($this->input('date_entree'));
+        $end   = $this->parseDate($this->input('date_sortie'));
+
 
         if (!$appartementId || !$start || !$end) {
             return;
@@ -41,14 +63,8 @@ class UpdateReservationRequest extends FormRequest
         $reservationId = $this->input('id_reservation');
         $conflict = Reservation::where('appartement_id', $appartementId)
             ->where('id', '!=', $reservationId)
-            ->where(function ($query) use ($start, $end) {
-                $query->whereBetween('date_entree', [$start, $end])
-                      ->orWhereBetween('date_sortie', [$start, $end])
-                      ->orWhere(function ($q) use ($start, $end) {
-                          $q->where('date_entree', '<=', $start)
-                            ->where('date_sortie', '>=', $end);
-                      });
-            })
+            ->where('date_entree', '<', $end)
+            ->where('date_sortie', '>', $start)
             ->first();
 
         if ($conflict) {

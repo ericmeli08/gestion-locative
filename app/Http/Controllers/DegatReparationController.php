@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DegatReparation;
 use App\Models\Appartement;
+use App\Models\Depense;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,8 +15,7 @@ class DegatReparationController extends Controller
         $query = DegatReparation::with('appartement');
 
         if ($request->filled('search')) {
-            $query->where('description', 'like', '%' . $request->search . '%')
-                  ->orWhere('type_degat', 'like', '%' . $request->search . '%');
+            $query->where('description', 'like', '%' . $request->search . '%')->orWhere('type_degat', 'like', '%' . $request->search . '%');
         }
 
         if ($request->filled('status')) {
@@ -59,10 +59,20 @@ class DegatReparationController extends Controller
             'reparateur' => 'nullable|string|max:255',
         ]);
 
-        DegatReparation::create($validated);
+        $degat = DegatReparation::create($validated);
 
-        return redirect()->route('degats.index')
-            ->with('success', 'Dégât/Réparation créé avec succès.');
+        // Si un coût est renseigné, on crée une dépense
+        if (!empty($degat->cout)) {
+            Depense::create([
+                'date' => $degat->date_reparation ?? $degat->date,
+                'type_depense' => 'Réparation dégât : ' . $degat->type_degat,
+                'description' => 'Dégât ID:' . $degat->id . ' - ' . $degat->description . ($degat->solution ? ' | Solution: ' . $degat->solution : ''),
+                'appartement_id' => $degat->appartement_id,
+                'montant' => $degat->cout,
+            ]);
+        }
+
+        return redirect()->route('degats.index')->with('success', 'Dégât/Réparation créé avec succès.');
     }
 
     public function edit(DegatReparation $degat)
@@ -91,15 +101,39 @@ class DegatReparationController extends Controller
 
         $degat->update($validated);
 
-        return redirect()->route('degats.index')
-            ->with('success', 'Dégât/Réparation mis à jour avec succès.');
+        // Si un cout est présent, on gère la dépense
+        if (!empty($validated['cout'])) {
+            // On cherche une dépense déjà liée à ce dégât
+            $depense = Depense::where('description', 'like', '%Dégât ID:' . $degat->id . '%')->first();
+
+            if ($depense) {
+                // Mise à jour de la dépense existante
+                $depense->update([
+                    'date' => $degat->date_reparation ?? $degat->date,
+                    'type_depense' => 'Réparation dégât : ' . $degat->type_degat,
+                    'description' => 'Dégât ID:' . $degat->id . ' - ' . $degat->description . ($degat->solution ? ' | Solution: ' . $degat->solution : ''),
+                    'appartement_id' => $degat->appartement_id,
+                    'montant' => $degat->cout,
+                ]);
+            } else {
+                // Création de la dépense si elle n'existe pas
+                Depense::create([
+                    'date' => $degat->date_reparation ?? $degat->date,
+                    'type_depense' => 'Réparation dégât : ' . $degat->type_degat,
+                    'description' => 'Dégât ID:' . $degat->id . ' - ' . $degat->description . ($degat->solution ? ' | Solution: ' . $degat->solution : ''),
+                    'appartement_id' => $degat->appartement_id,
+                    'montant' => $degat->cout,
+                ]);
+            }
+        }
+
+        return redirect()->route('degats.index')->with('success', 'Dégât/Réparation mis à jour avec succès.');
     }
 
     public function destroy(DegatReparation $degat)
     {
         $degat->delete();
 
-        return redirect()->route('degats.index')
-            ->with('success', 'Dégât/Réparation supprimé avec succès.');
+        return redirect()->route('degats.index')->with('success', 'Dégât/Réparation supprimé avec succès.');
     }
 }

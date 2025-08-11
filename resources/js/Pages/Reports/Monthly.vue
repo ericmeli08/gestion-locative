@@ -1,15 +1,15 @@
 <template>
   <AppLayout>
-    <Head title="Rapport Mensuel" />
+    <Head :title="isDaily ? `Rapport Journalier - ${monthName}` : 'Rapport Mensuel'" />
 
     <!-- Page header -->
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
         <ChartBarIcon class="inline h-8 w-8 mr-3 text-primary-600" />
-        Rapport Mensuel
+        {{ isDaily ? `Rapport Journalier - ${monthName}` : 'Rapport Mensuel' }}
       </h1>
       <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-        Analyse financière détaillée par mois
+        {{ isDaily ? 'Analyse financière détaillée par jour' : 'Analyse financière détaillée par mois' }}
       </p>
     </div>
 
@@ -22,11 +22,27 @@
               Période
             </label>
             <select v-model="selectedPeriod" @change="updatePeriod" class="input-field">
+              <option value="1">1 dernier mois</option>
+              <option value="3">3 derniers mois</option>
               <option value="6">6 derniers mois</option>
               <option value="12">12 derniers mois</option>
               <option value="24">24 derniers mois</option>
             </select>
           </div>
+
+          <!-- Sélecteur de mois spécifique quand période = 1 -->
+          <div v-if="selectedPeriod === '1' && !isDaily">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Mois spécifique
+            </label>
+            <select v-model="selectedMonth" @change="updatePeriod" class="input-field">
+              <option value="">Mois actuel</option>
+              <option v-for="month in availableMonths" :key="month.value" :value="month.value">
+                {{ month.label_fr }}
+              </option>
+            </select>
+          </div>
+
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Appartement
@@ -34,15 +50,33 @@
             <select v-model="selectedApartment" @change="updatePeriod" class="input-field">
               <option value="">Tous les appartements</option>
               <option v-for="apt in apartments" :key="apt.id" :value="apt.id">
-                            {{ apt.name }}
-                        </option>
+                {{ apt.name }}
+              </option>
             </select>
           </div>
         </div>
-        <button @click="exportData" class="btn btn-secondary">
-          <DocumentArrowDownIcon class="w-4 h-4 mr-2" />
-          Exporter
-        </button>
+        <div class="flex space-x-2">
+          <!-- Bouton pour voir les détails journaliers -->
+          <button v-if="selectedPeriod === '1' && !isDaily"
+                  @click="showDailyDetails"
+                  class="btn btn-primary">
+            <CalendarDaysIcon class="w-4 h-4 mr-2" />
+            Voir par jour
+          </button>
+
+          <!-- Bouton pour revenir à la vue mensuelle -->
+          <button v-if="isDaily"
+                  @click="backToMonthly"
+                  class="btn btn-secondary">
+            <ArrowLeftIcon class="w-4 h-4 mr-2" />
+            Retour mensuel
+          </button>
+
+          <button @click="exportData" class="btn btn-secondary">
+            <DocumentArrowDownIcon class="w-4 h-4 mr-2" />
+            Exporter
+          </button>
+        </div>
       </div>
     </div>
 
@@ -56,6 +90,14 @@
           <div class="ml-4">
             <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Revenus Totaux</p>
             <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ formatCurrency(summary.totalRevenue) }}</p>
+            <div class="flex items-center mt-1">
+              <ArrowTrendingUpIcon v-if="revenuesTrend > 0" class="h-4 w-4 text-success-500 mr-1" />
+              <ArrowTrendingDownIcon v-else-if="revenuesTrend < 0" class="h-4 w-4 text-error-500 mr-1" />
+              <span :class="revenuesTrend > 0 ? 'text-success-600' : revenuesTrend < 0 ? 'text-error-600' : 'text-gray-500'"
+                    class="text-xs font-medium">
+                {{ Math.abs(revenuesTrend).toFixed(1) }}%
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -99,11 +141,17 @@
 
     <!-- Charts -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-      <!-- Revenue vs Expenses Chart -->
+      <!-- Revenue Trend Chart -->
       <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-          Revenus vs Dépenses
-        </h3>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+            Tendance des Revenus
+          </h3>
+          <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+            <TrendingUpIcon class="h-4 w-4 mr-1" />
+            {{ isDaily ? 'Evolution journalière' : 'Evolution mensuelle' }}
+          </div>
+        </div>
         <div class="h-80">
           <canvas ref="revenueChart"></canvas>
         </div>
@@ -111,9 +159,15 @@
 
       <!-- Profit Trend Chart -->
       <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-          Évolution du Bénéfice
-        </h3>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+            Évolution du Bénéfice
+          </h3>
+          <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+            <ChartBarIcon class="h-4 w-4 mr-1" />
+            Comparaison période
+          </div>
+        </div>
         <div class="h-80">
           <canvas ref="profitChart"></canvas>
         </div>
@@ -124,7 +178,7 @@
     <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
       <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-          Détail par Mois
+          {{ isDaily ? 'Détail par Jour' : 'Détail par Mois' }}
         </h3>
       </div>
       <div class="overflow-x-auto">
@@ -132,7 +186,7 @@
           <thead class="bg-gray-50 dark:bg-gray-900">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Mois
+                {{ isDaily ? 'Jour' : 'Mois' }}
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Revenus
@@ -140,7 +194,7 @@
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Dépenses
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th v-if="!isDaily" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Charges
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
@@ -152,24 +206,38 @@
             </tr>
           </thead>
           <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-            <tr v-for="month in monthlyData.slice().reverse()" :key="month.month" class="hover:bg-gray-50 dark:hover:bg-gray-700">
+            <tr v-for="item in displayData.slice().reverse()" :key="isDaily ? item.day : item.month"
+                class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                {{ formatMonth(month.month) }}
+                {{ isDaily ? item.day_name : formatMonth(item.month) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                {{ formatCurrency(month.revenue) }}
+                <div class="flex items-center">
+                  <span>{{ formatCurrency(item.revenue) }}</span>
+                  <TrendingUpIcon v-if="item.revenue > 0" class="ml-2 h-3 w-3 text-success-500" />
+                </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                {{ formatCurrency(month.expenses) }}
+                {{ formatCurrency(item.expenses) }}
+              </td>
+              <td v-if="!isDaily" class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                {{ formatCurrency(item.charges) }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold"
+                  :class="item.profit >= 0 ? 'text-success-600' : 'text-error-600'">
+                <div class="flex items-center">
+                  <ArrowTrendingUpIcon v-if="item.profit > 0" class="mr-1 h-4 w-4" />
+                  <ArrowTrendingDownIcon v-else-if="item.profit < 0" class="mr-1 h-4 w-4" />
+                  {{ formatCurrency(item.profit) }}
+                </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                {{ formatCurrency(month.charges) }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold" :class="month.profit >= 0 ? 'text-success-600' : 'text-error-600'">
-                {{ formatCurrency(month.profit) }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                {{ month.margin }}%
+                <span class="px-2 py-1 text-xs font-medium rounded-full"
+                      :class="item.margin > 20 ? 'bg-success-100 text-success-800' :
+                             item.margin > 10 ? 'bg-warning-100 text-warning-800' :
+                             'bg-error-100 text-error-800'">
+                  {{ item.margin }}%
+                </span>
               </td>
             </tr>
           </tbody>
@@ -180,32 +248,47 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { router } from '@inertiajs/vue3'
 import {
   ChartBarIcon,
   CurrencyEuroIcon,
   ArrowTrendingUpIcon,
-  DocumentArrowDownIcon
+  ArrowTrendingDownIcon,
+  DocumentArrowDownIcon,
+  CalendarDaysIcon,
+  ArrowLeftIcon,
+//   TrendingUpIcon
 } from '@heroicons/vue/24/outline'
 import AppLayout from '@/Layouts/AppLayout.vue'
 
 const props = defineProps({
   monthlyData: Array,
+  dailyData: Array,
   apartments: Array,
   selectedPeriod: String,
   selectedApartment: String,
+  selectedMonth: String,
+  showDaily: Boolean,
+  isDaily: Boolean,
+  availableMonths: Array,
+  monthName: String,
 })
-console.log(props)
 
 const selectedPeriod = ref(props.selectedPeriod || '12')
 const selectedApartment = ref(props.selectedApartment || '')
+const selectedMonth = ref(props.selectedMonth || '')
 const revenueChart = ref(null)
 const profitChart = ref(null)
 
+const displayData = computed(() => {
+  return props.isDaily ? props.dailyData : props.monthlyData
+})
+
 const summary = computed(() => {
-  const totalRevenue = props.monthlyData?.reduce((sum, month) => sum + month.revenue, 0)
-  const totalExpenses = props.monthlyData?.reduce((sum, month) => sum + month.expenses + month.charges, 0)
+  const data = displayData.value || []
+  const totalRevenue = data.reduce((sum, item) => sum + item.revenue, 0)
+  const totalExpenses = data.reduce((sum, item) => sum + item.expenses + (item.charges || 0), 0)
   const netProfit = totalRevenue - totalExpenses
   const margin = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) : 0
 
@@ -217,143 +300,94 @@ const summary = computed(() => {
   }
 })
 
+const revenuesTrend = computed(() => {
+  const data = displayData.value || []
+  if (data.length < 2) return 0
+
+  const lastRevenue = data[data.length - 1]?.revenue || 0
+  const previousRevenue = data[data.length - 2]?.revenue || 0
+
+  if (previousRevenue === 0) return 0
+  return ((lastRevenue - previousRevenue) / previousRevenue) * 100
+})
+
 const updatePeriod = () => {
-  router.get(route('reports.monthly'), {
+  const params = {
     period: selectedPeriod.value,
     apartment: selectedApartment.value
+  }
+
+  if (selectedPeriod.value === '1' && selectedMonth.value) {
+    params.selected_month = selectedMonth.value
+  }
+
+  router.get(route('reports.monthly'), params)
+}
+
+const showDailyDetails = () => {
+  router.get(route('reports.monthly'), {
+    period: '1',
+    apartment: selectedApartment.value,
+    selected_month: selectedMonth.value || new Date().toISOString().slice(0, 7),
+    show_daily: true
   })
 }
 
-// const exportData = () => {
-//   // Logic to export data as CSV/Excel
-//   const csvContent = "data:text/csv;charset=utf-8,"
-//     + "Mois,Revenus,Dépenses,Charges,Bénéfice,Marge\n"
-//     + props.monthlyData?.map(month =>
-//         `${month.month},${month.revenue},${month.expenses},${month.charges},${month.profit},${month.margin}%`
-//       ).join("\n")
-
-//   const encodedUri = encodeURI(csvContent)
-//   const link = document.createElement("a")
-//   link.setAttribute("href", encodedUri)
-//   link.setAttribute("download", "rapport-mensuel.csv")
-//   document.body.appendChild(link)
-//   link.click()
-//   document.body.removeChild(link)
-// }
+const backToMonthly = () => {
+  router.get(route('reports.monthly'), {
+    period: '1',
+    apartment: selectedApartment.value,
+    selected_month: selectedMonth.value
+  })
+}
 
 import * as XLSX from 'xlsx'
 
- const exportData = () => {
-  // Logic to export data as CSV/Excel
-  const csvContent = "data:text/csv;charset=utf-8,"
-    + "Mois,Revenus,Dépenses,Charges,Bénéfice,Marge\n"
-    + props.monthlyData?.map(month =>
-        `${month.month},${month.revenue},${month.expenses},${month.charges},${month.profit},${month.margin}%`
-      ).join("\n")
+const exportData = () => {
+  const data = displayData.value || []
+  const isDaily = props.isDaily
 
-  const encodedUri = encodeURI(csvContent)
-  const link = document.createElement("a")
-  link.setAttribute("href", encodedUri)
-  link.setAttribute("download", "rapport-mensuel.csv")
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
   // Créer un nouveau classeur Excel
   const workbook = XLSX.utils.book_new()
 
   // Préparer les données avec en-têtes
   const worksheetData = [
-    ['Mois', 'Revenus (F CFA)', 'Dépenses (F CFA)', 'Charges (F CFA)', 'Bénéfice (F CFA)', 'Marge (%)']
+    isDaily
+      ? ['Jour', 'Revenus (F CFA)', 'Dépenses (F CFA)', 'Bénéfice (F CFA)', 'Marge (%)']
+      : ['Mois', 'Revenus (F CFA)', 'Dépenses (F CFA)', 'Charges (F CFA)', 'Bénéfice (F CFA)', 'Marge (%)']
   ]
 
-  // Ajouter les données mensuelles
-  props.monthlyData?.forEach(month => {
-    worksheetData.push([
-      month.month,
-      parseFloat(month.revenue) || 0,
-      parseFloat(month.expenses) || 0,
-      parseFloat(month.charges) || 0,
-      parseFloat(month.profit) || 0,
-      parseFloat(month.margin) || 0
-    ])
+  // Ajouter les données
+  data.forEach(item => {
+    if (isDaily) {
+      worksheetData.push([
+        item.day_name,
+        parseFloat(item.revenue) || 0,
+        parseFloat(item.expenses) || 0,
+        parseFloat(item.profit) || 0,
+        parseFloat(item.margin) || 0
+      ])
+    } else {
+      worksheetData.push([
+        item.month,
+        parseFloat(item.revenue) || 0,
+        parseFloat(item.expenses) || 0,
+        parseFloat(item.charges) || 0,
+        parseFloat(item.profit) || 0,
+        parseFloat(item.margin) || 0
+      ])
+    }
   })
 
-  // Créer la feuille de calcul
   const worksheet = XLSX.utils.aoa_to_sheet(worksheetData)
+  XLSX.utils.book_append_sheet(workbook, worksheet, isDaily ? 'Rapport Journalier' : 'Rapport Mensuel')
 
-  // Définir la largeur des colonnes
-  const columnWidths = [
-    { wch: 15 }, // Mois
-    { wch: 12 }, // Revenus
-    { wch: 12 }, // Dépenses
-    { wch: 12 }, // Charges
-    { wch: 12 }, // Bénéfice
-    { wch: 10 }  // Marge
-  ]
-  worksheet['!cols'] = columnWidths
+  const fileName = isDaily
+    ? `rapport-journalier-${props.monthName?.replace(' ', '-')}.xlsx`
+    : `rapport-mensuel-${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}.xlsx`
 
-  // Appliquer des styles aux en-têtes
-  const headerRange = XLSX.utils.decode_range(worksheet['!ref'])
-  for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
-    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: col })
-    if (!worksheet[cellAddress]) continue
-
-    worksheet[cellAddress].s = {
-      font: { bold: true, color: { rgb: "FFFFFF" } },
-      fill: { fgColor: { rgb: "4F46E5" } },
-      alignment: { horizontal: "center", vertical: "center" },
-      border: {
-        top: { style: "thin", color: { rgb: "000000" } },
-        bottom: { style: "thin", color: { rgb: "000000" } },
-        left: { style: "thin", color: { rgb: "000000" } },
-        right: { style: "thin", color: { rgb: "000000" } }
-      }
-    }
-  }
-
-  // Appliquer des styles aux données
-  for (let row = 1; row <= headerRange.e.r; row++) {
-    for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
-      const cellAddress = XLSX.utils.encode_cell({ r: row, c: col })
-      if (!worksheet[cellAddress]) continue
-
-      // Format monétaire pour les colonnes de montants
-      if (col >= 1 && col <= 4) {
-        worksheet[cellAddress].z = '#,##0.00"F CFA"'
-      }
-      // Format pourcentage pour la colonne marge
-      else if (col === 5) {
-        worksheet[cellAddress].z = '0.00"%"'
-      }
-
-      // Style des cellules de données
-      worksheet[cellAddress].s = {
-        alignment: { horizontal: col === 0 ? "left" : "right", vertical: "center" },
-        border: {
-          top: { style: "thin", color: { rgb: "E5E7EB" } },
-          bottom: { style: "thin", color: { rgb: "E5E7EB" } },
-          left: { style: "thin", color: { rgb: "E5E7EB" } },
-          right: { style: "thin", color: { rgb: "E5E7EB" } }
-        }
-      }
-
-      // Couleur alternée pour les lignes
-      if (row % 2 === 0) {
-        worksheet[cellAddress].s.fill = { fgColor: { rgb: "F9FAFB" } }
-      }
-    }
-  }
-
-  // Ajouter la feuille au classeur
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Rapport Mensuel')
-
-  // Générer le nom de fichier avec la date actuelle
-  const currentDate = new Date()
-  const fileName = `rapport-mensuel-${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}.xlsx`
-
-  // Télécharger le fichier
   XLSX.writeFile(workbook, fileName)
- }
+}
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('fr-FR', {
@@ -372,50 +406,108 @@ const formatMonth = (month) => {
 const initCharts = async () => {
   await nextTick()
 
-  // Import Chart.js dynamically
   const { Chart, registerables } = await import('chart.js')
   Chart.register(...registerables)
 
-  // Revenue vs Expenses Chart
+  const data = displayData.value || []
+  const isDailyView = props.isDaily
+
+  // Configuration commune pour les graphiques
+  const commonOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: {
+      intersect: false,
+      mode: 'index',
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          usePointStyle: true,
+          padding: 20
+        }
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        cornerRadius: 8,
+        displayColors: true
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: isDailyView ? 15 : 12
+        }
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: 'rgba(0, 0, 0, 0.1)'
+        },
+        ticks: {
+          callback: function(value) {
+            return formatCurrency(value)
+          }
+        }
+      }
+    }
+  }
+
+  // Graphique des revenus (courbe qui suit les variations)
   if (revenueChart.value) {
     new Chart(revenueChart.value, {
       type: 'line',
       data: {
-        labels: props.monthlyData?.map(month => formatMonth(month.month)),
+        labels: data.map(item =>
+          isDailyView ? item.day_name : formatMonth(item.month)
+        ),
         datasets: [
           {
             label: 'Revenus',
-            data: props.monthlyData?.map(month => month.revenue),
-            borderColor: 'rgb(34, 197, 94)',
+            data: data.map(item => item.revenue),
+            borderColor: '#22C55E',
             backgroundColor: 'rgba(34, 197, 94, 0.1)',
+            borderWidth: 3,
+            fill: true,
             tension: 0.4,
-            fill: true
+            pointBackgroundColor: '#22C55E',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointRadius: 5,
+            pointHoverRadius: 8
           },
           {
             label: 'Dépenses',
-            data: props.monthlyData?.map(month => month.expenses + month.charges),
-            borderColor: 'rgb(239, 68, 68)',
+            data: data.map(item => item.expenses + (item.charges || 0)),
+            borderColor: '#EF4444',
             backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderWidth: 2,
+            fill: true,
             tension: 0.4,
-            fill: true
+            pointBackgroundColor: '#EF4444',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6
           }
         ]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...commonOptions,
         plugins: {
-          legend: {
-            position: 'top',
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              callback: function(value) {
-                return formatCurrency(value)
-              }
+          ...commonOptions.plugins,
+          title: {
+            display: true,
+            text: isDailyView ? 'Évolution journalière des revenus et dépenses' : 'Évolution mensuelle des revenus et dépenses',
+            font: {
+              size: 14,
+              weight: 'bold'
             }
           }
         }
@@ -423,40 +515,40 @@ const initCharts = async () => {
     })
   }
 
-  // Profit Chart
+  // Graphique des profits (barres avec couleurs conditionnelles)
   if (profitChart.value) {
     new Chart(profitChart.value, {
       type: 'bar',
       data: {
-        labels: props.monthlyData?.map(month => formatMonth(month.month)),
+        labels: data.map(item =>
+          isDailyView ? item.day_name : formatMonth(item.month)
+        ),
         datasets: [
           {
             label: 'Bénéfice',
-            data: props.monthlyData?.map(month => month.profit),
-            backgroundColor: props.monthlyData?.map(month =>
-              month.profit >= 0 ? 'rgba(59, 130, 246, 0.8)' : 'rgba(239, 68, 68, 0.8)'
+            data: data.map(item => item.profit),
+            backgroundColor: data.map(item =>
+              item.profit >= 0 ? 'rgba(59, 130, 246, 0.8)' : 'rgba(239, 68, 68, 0.8)'
             ),
-            borderColor: props.monthlyData?.map(month =>
-              month.profit >= 0 ? 'rgb(59, 130, 246)' : 'rgb(239, 68, 68)'
+            borderColor: data.map(item =>
+              item.profit >= 0 ? '#3B82F6' : '#EF4444'
             ),
-            borderWidth: 1
+            borderWidth: 1,
+            borderRadius: 4,
+            borderSkipped: false,
           }
         ]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...commonOptions,
         plugins: {
-          legend: {
-            position: 'top',
-          }
-        },
-        scales: {
-          y: {
-            ticks: {
-              callback: function(value) {
-                return formatCurrency(value)
-              }
+          ...commonOptions.plugins,
+          title: {
+            display: true,
+            text: isDailyView ? 'Bénéfices par jour' : 'Bénéfices par mois',
+            font: {
+              size: 14,
+              weight: 'bold'
             }
           }
         }
@@ -468,4 +560,19 @@ const initCharts = async () => {
 onMounted(() => {
   initCharts()
 })
+
+// Réinitialiser les graphiques quand les données changent
+watch(() => props.isDaily, () => {
+  nextTick(() => {
+    initCharts()
+  })
+}, { immediate: false })
+
+watch(() => displayData.value, () => {
+  nextTick(() => {
+    initCharts()
+  })
+}, { deep: true })
 </script>
+
+

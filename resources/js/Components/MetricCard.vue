@@ -1,25 +1,25 @@
 <template>
   <div
-    class="bg-white dark:bg-gray-800 overflow-hidden shadow-card hover:shadow-card-hover dark:shadow-card-dark dark:hover:shadow-card-hover-dark rounded-xl transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 animate-fade-in"
+    class="bg-white dark:bg-gray-800 flex flex-col flex-wrap shadow-card hover:shadow-card-hover dark:shadow-card-dark dark:hover:shadow-card-hover-dark rounded-xl transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 animate-fade-in"
   >
     <div class="p-6">
-      <div class="flex items-center">
-        <div class="flex-shrink-0">
+      <div class="flex items-center flex-wrap">
+        <div class="flex-shrink-0 flex-wrap">
           <div
             :class="[
-              'inline-flex items-center justify-center p-3 rounded-xl shadow-lg',
+              'inline-flex items-center flex-wrap  justify-center p-3 rounded-xl shadow-lg',
               colorClasses,
             ]"
           >
             <component :is="iconComponent" class="h-7 w-7" />
           </div>
         </div>
-        <div class="ml-5 w-0 flex-1">
-          <dl>
+        <div class="ml-5 w-0  flex-1">
+          <dl  class="flex flex-col flex-wrap">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
               {{ title }}
             </dt>
-            <dd class="flex items-baseline">
+            <dd class="flex flex-wrap items-baseline">
               <div class="text-2xl font-bold text-gray-900 dark:text-white">
                 {{ value }}
               </div>
