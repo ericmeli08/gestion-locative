@@ -241,7 +241,7 @@
       <div
         class="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6"
       >
-        <Pagination :links="stocks.links" />
+        <Pagination :links="stocks" />
       </div>
     </div>
   </AppLayout>

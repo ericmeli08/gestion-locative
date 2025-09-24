@@ -52,10 +52,12 @@
             class="block select-field w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200"
           >
             <option value="">Tous les types</option>
-            <option value="maintenance">Maintenance</option>
-            <option value="reparation">Réparation</option>
-            <option value="amenagement">Aménagement</option>
-            <option value="autre">Autre</option>
+               <option value="maintenance">Maintenance</option>
+              <option value="reparation">Réparation</option>
+              <option value="amenagement">Aménagement</option>
+              <option value="equipement">Équipement</option>
+              <option value="nettoyage">Nettoyage</option>
+              <option value="autre">Autre</option>
           </select>
         </div>
 
@@ -177,7 +179,7 @@
       <div
         class="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6"
       >
-        <Pagination :links="depenses.links" />
+        <Pagination :links="depenses" />
       </div>
     </div>
   </AppLayout>

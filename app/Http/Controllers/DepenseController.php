@@ -6,6 +6,8 @@ use App\Models\Depense;
 use App\Models\Appartement;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DepenseController extends Controller
 {
@@ -53,12 +55,60 @@ class DepenseController extends Controller
             'description' => 'required|string',
             'appartement_id' => 'nullable|exists:appartements,id',
             'montant' => 'required|numeric|min:0',
+            'is_general_expense' => 'boolean',
+            'selected_apartments' => 'array',
+            'selected_apartments.*' => 'exists:appartements,id',
         ]);
 
-        Depense::create($validated);
+        // Validation personnalisée pour les dépenses générales
+        if ($validated['is_general_expense'] && empty($validated['selected_apartments'])) {
+            return back()->withErrors([
+                'selected_apartments' => 'Veuillez sélectionner au moins un appartement pour une dépense générale.'
+            ]);
+        }
 
-        return redirect()->route('depenses.index')
-            ->with('success', 'Dépense créée avec succès.');
+        DB::beginTransaction();
+
+        try {
+            if ($validated['is_general_expense'] && !empty($validated['selected_apartments'])) {
+                // Dépense générale : créer une dépense pour chaque appartement sélectionné
+                $montantParAppartement = $validated['montant'] / count($validated['selected_apartments']);
+                
+                foreach ($validated['selected_apartments'] as $appartementId) {
+                    Depense::create([
+                        'date' => $validated['date'],
+                        'type_depense' => $validated['type_depense'],
+                        'description' => $validated['description'] . ' (Dépense générale)',
+                        'appartement_id' => $appartementId,
+                        'montant' => round($montantParAppartement, 2),
+                    ]);
+                }
+
+                $message = 'Dépenses générales créées avec succès pour ' . count($validated['selected_apartments']) . ' appartement(s).';
+            } else {
+                // Dépense spécifique à un appartement
+                Depense::create([
+                    'date' => $validated['date'],
+                    'type_depense' => $validated['type_depense'],
+                    'description' => $validated['description'],
+                    'appartement_id' => $validated['appartement_id'],
+                    'montant' => $validated['montant'],
+                ]);
+
+                $message = 'Dépense créée avec succès.';
+            }
+
+            DB::commit();
+
+            return redirect()->route('depenses.index')->with('success', $message);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Erreur lors de la création des dépenses : ' . $e->getMessage() . ' dans ' . $e->getFile() . ' et la trace est  ' . $e->getTrace());
+            return back()->withErrors([
+                'general' => 'Une erreur est survenue lors de l\'enregistrement des dépenses. Veuillez réessayer.'
+            ]);
+        }
     }
 
     public function edit(Depense $depense)
