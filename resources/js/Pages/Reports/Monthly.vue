@@ -82,62 +82,140 @@
 
     <!-- Summary cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-        <div class="flex items-center">
+  <!-- Revenus Totaux -->
+  <div class="bg-white dark:bg-gray-800 shadow-card hover:shadow-card-hover rounded-xl p-6 border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:scale-105">
+    <div class="flex items-start justify-between">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center mb-3">
           <div class="p-3 rounded-xl bg-gradient-to-br from-success-500 to-success-600 text-white shadow-lg">
             <CurrencyEuroIcon class="h-6 w-6" />
           </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Revenus Totaux</p>
-            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ formatCurrency(summary.totalRevenue) }}</p>
-            <div class="flex items-center mt-1">
-              <ArrowTrendingUpIcon v-if="revenuesTrend > 0" class="h-4 w-4 text-success-500 mr-1" />
-              <ArrowTrendingDownIcon v-else-if="revenuesTrend < 0" class="h-4 w-4 text-error-500 mr-1" />
-              <span :class="revenuesTrend > 0 ? 'text-success-600' : revenuesTrend < 0 ? 'text-error-600' : 'text-gray-500'"
-                    class="text-xs font-medium">
-                {{ Math.abs(revenuesTrend).toFixed(1) }}%
-              </span>
-            </div>
+          <div class="ml-3 flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
+              Revenus Totaux
+            </p>
           </div>
         </div>
-      </div>
-
-      <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-        <div class="flex items-center">
-          <div class="p-3 rounded-xl bg-gradient-to-br from-error-500 to-error-600 text-white shadow-lg">
-            <CurrencyEuroIcon class="h-6 w-6" />
-          </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Dépenses Totales</p>
-            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ formatCurrency(summary.totalExpenses) }}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-        <div class="flex items-center">
-          <div class="p-3 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-lg">
-            <ArrowTrendingUpIcon class="h-6 w-6" />
-          </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Bénéfice Net</p>
-            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ formatCurrency(summary.netProfit) }}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white dark:bg-gray-800 shadow-card rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-        <div class="flex items-center">
-          <div class="p-3 rounded-xl bg-gradient-to-br from-warning-500 to-warning-600 text-white shadow-lg">
-            <ChartBarIcon class="h-6 w-6" />
-          </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Marge</p>
-            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ summary.margin }}%</p>
+        
+        <div class="space-y-2">
+          <p class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white break-words leading-tight">
+            {{ formatCurrencyCompact(summary.totalRevenue) }}
+          </p>
+          
+          <div class="flex items-center">
+            <ArrowTrendingUpIcon v-if="revenuesTrend > 0" class="h-4 w-4 text-success-500 mr-1 flex-shrink-0" />
+            <ArrowTrendingDownIcon v-else-if="revenuesTrend < 0" class="h-4 w-4 text-error-500 mr-1 flex-shrink-0" />
+            <span 
+              :class="revenuesTrend > 0 ? 'text-success-600' : revenuesTrend < 0 ? 'text-error-600' : 'text-gray-500'"
+              class="text-xs font-medium"
+            >
+              {{ Math.abs(revenuesTrend).toFixed(1) }}%
+            </span>
+            <span class="text-xs text-gray-500 dark:text-gray-400 ml-1">vs mois dernier</span>
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Dépenses Totales -->
+  <div class="bg-white dark:bg-gray-800 shadow-card hover:shadow-card-hover rounded-xl p-6 border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:scale-105">
+    <div class="flex items-start justify-between">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center mb-3">
+          <div class="p-3 rounded-xl bg-gradient-to-br from-error-500 to-error-600 text-white shadow-lg">
+            <CurrencyEuroIcon class="h-6 w-6" />
+          </div>
+          <div class="ml-3 flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
+              Dépenses Totales
+            </p>
+          </div>
+        </div>
+        
+        <div class="space-y-2">
+          <p class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white break-words leading-tight">
+            {{ formatCurrencyCompact(summary.totalExpenses) }}
+          </p>
+          
+          <div class="flex items-center">
+            <span class="text-xs text-gray-500 dark:text-gray-400">
+              {{ getExpensePercentage(summary.totalExpenses, summary.totalRevenue) }}% des revenus
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bénéfice Net -->
+  <div class="bg-white dark:bg-gray-800 shadow-card hover:shadow-card-hover rounded-xl p-6 border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:scale-105">
+    <div class="flex items-start justify-between">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center mb-3">
+          <div class="p-3 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-lg">
+            <ArrowTrendingUpIcon class="h-6 w-6" />
+          </div>
+          <div class="ml-3 flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
+              Bénéfice Net
+            </p>
+          </div>
+        </div>
+        
+        <div class="space-y-2">
+          <p class="text-xl lg:text-2xl font-bold break-words leading-tight"
+             :class="summary.netProfit >= 0 ? 'text-success-600 dark:text-success-400' : 'text-error-600 dark:text-error-400'">
+            {{ formatCurrencyCompact(summary.netProfit) }}
+          </p>
+          
+          <div class="flex items-center">
+            <div class="flex items-center px-2 py-1 rounded-full text-xs font-medium"
+                 :class="summary.netProfit >= 0 ? 'bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-300' : 'bg-error-100 text-error-800 dark:bg-error-900/30 dark:text-error-300'">
+              <ArrowTrendingUpIcon v-if="summary.netProfit >= 0" class="h-3 w-3 mr-1" />
+              <ArrowTrendingDownIcon v-else class="h-3 w-3 mr-1" />
+              {{ summary.netProfit >= 0 ? 'Positif' : 'Négatif' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marge -->
+  <div class="bg-white dark:bg-gray-800 shadow-card hover:shadow-card-hover rounded-xl p-6 border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:scale-105">
+    <div class="flex items-start justify-between">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center mb-3">
+          <div class="p-3 rounded-xl bg-gradient-to-br from-warning-500 to-warning-600 text-white shadow-lg">
+            <ChartBarIcon class="h-6 w-6" />
+          </div>
+          <div class="ml-3 flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
+              Marge Bénéficiaire
+            </p>
+          </div>
+        </div>
+        
+        <div class="space-y-2">
+          <p class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white break-words leading-tight">
+            {{ summary.margin }}%
+          </p>
+          
+          <div class="flex items-center">
+            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div 
+                class="h-2 rounded-full transition-all duration-500"
+                :class="getMarginColorClass(summary.margin)"
+                :style="{ width: Math.min(Math.abs(summary.margin), 100) + '%' }"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
     <!-- Charts -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
@@ -573,6 +651,38 @@ watch(() => displayData.value, () => {
     initCharts()
   })
 }, { deep: true })
+
+// Fonctions utilitaires à ajouter dans votre composant
+const formatCurrencyCompact = (amount) => {
+  const absAmount = Math.abs(amount)
+  
+  if (absAmount >= 1000000000) {
+    return (amount / 1000000000).toFixed(1) + 'Md F CFA'
+  } else if (absAmount >= 1000000) {
+    return (amount / 1000000).toFixed(1) + 'M F CFA'
+  } else if (absAmount >= 1000) {
+    return (amount / 1000).toFixed(0) + 'k F CFA'
+  } else {
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'XOF',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount)
+  }
+}
+
+const getExpensePercentage = (expenses, revenue) => {
+  if (revenue === 0) return 0
+  return Math.round((expenses / revenue) * 100)
+}
+
+const getMarginColorClass = (margin) => {
+  if (margin >= 30) return 'bg-success-500'
+  if (margin >= 15) return 'bg-warning-500'
+  if (margin >= 0) return 'bg-orange-500'
+  return 'bg-error-500'
+}
 </script>
 
 
