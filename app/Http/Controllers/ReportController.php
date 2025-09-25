@@ -124,7 +124,7 @@ class ReportController extends Controller
             ->where('statut_paiement', 'paid');
 
         if ($apartmentId) {
-            $revenueQuery->where('appartement_id', $apartmentId);
+            $revenueQuery->where('appartement_id', $apartmentId); 
         }
 
         $revenue = $revenueQuery->sum('revenus_totaux');

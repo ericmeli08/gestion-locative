@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\AppartementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
@@ -9,11 +10,15 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\DegatReparationController;
 use App\Http\Controllers\DisponibiliteController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -98,6 +103,10 @@ Route::group(
 
         // Language switching
         Route::post('/language', [LanguageController::class, 'switch'])->name('language.switch');
+
+
+       Route::post('/settings/push-sqlite', [SettingsController::class, 'pushSqlite'])
+    ->name('settings.push-sqlite');
     },
 );
 

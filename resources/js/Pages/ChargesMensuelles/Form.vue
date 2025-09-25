@@ -116,7 +116,8 @@
             <input
               v-model="form.recurrent"
               type="checkbox"
-              class="h-4 w-4 input-field text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
+              :disabled="form.parent_charge_id"
+              class="h-4 w-4 input-field text-primary-600 disabled:cursor-not-allowed disabled:text-gray-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
             />
             <label class="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
               <ArrowPathIcon class="inline h-4 w-4 mr-2" />
@@ -207,6 +208,7 @@ const form = useForm({
   montant: props.charge?.montant || 0,
   recurrent: props.charge?.recurrent || true,
   notes: props.charge?.notes || '',
+  parent_charge_id : props.charge?.parent_charge_id || null,
 })
 
 const submit = () => {

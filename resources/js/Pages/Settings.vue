@@ -237,6 +237,21 @@
           Enregistrer les modifications
         </button>
       </div>
+
+      <!-- git push -->
+        <div class="p-4">
+    <button 
+      @click="pushSqlite"
+      :disabled="loading"
+      class="px-4 py-2 bg-blue-600 text-white rounded-lg"
+    >
+      {{ loading ? 'sauvegarde en cours...' : 'Sauvegarder la base de donnee' }}
+    </button>
+
+    <p v-if="message" class="mt-2 font-bold">
+      {{ message }}
+    </p>
+  </div>
     </div>
   </AppLayout>
 </template>
@@ -260,4 +275,28 @@ import {
 } from '@heroicons/vue/24/outline'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import ThemeToggle from '@/Components/ThemeToggle.vue'
+
+
+import { router } from '@inertiajs/vue3'
+import {ref} from 'vue'
+
+const loading = ref(false)
+const message = ref('')
+
+function pushSqlite() {
+  loading.value = true
+  message.value = ''
+
+  router.post(route('settings.push-sqlite'), {}, {
+    onSuccess: (page) => {
+      message.value = page.props.flash?.message || '✅ Push réussi'
+    },
+    onError: (errors:any) => {
+      message.value = '❌ Erreur lors du push'
+    },
+    onFinish: () => {
+      loading.value = false
+    }
+  })
+}
 </script>

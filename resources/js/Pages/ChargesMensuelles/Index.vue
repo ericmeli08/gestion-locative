@@ -70,6 +70,7 @@
             <option value="">Tous les types</option>
             <option value="true">Récurrentes</option>
             <option value="false">Ponctuelles</option>
+            <option value="principale">Récurrentes principales</option>
           </select>
         </div>
 

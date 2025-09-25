@@ -16,6 +16,7 @@ class ChargeMensuelle extends Model
         'montant',
         'recurrent',
         'notes',
+        'parent_charge_id',
     ];
 
     protected $casts = [
@@ -27,5 +28,17 @@ class ChargeMensuelle extends Model
     public function appartement()
     {
         return $this->belongsTo(Appartement::class);
+    }
+
+    // Définir la relation "parent-enfant"
+    public function recurrentCharges()
+    {
+        return $this->hasMany(ChargeMensuelle::class, 'parent_charge_id');
+    }
+
+    //  relation vers le parent
+    public function parentCharge()
+    {
+        return $this->belongsTo(ChargeMensuelle::class, 'parent_charge_id');
     }
 }

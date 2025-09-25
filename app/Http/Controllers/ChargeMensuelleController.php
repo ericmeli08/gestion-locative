@@ -18,11 +18,18 @@ class ChargeMensuelleController extends Controller
         }
 
         if ($request->filled('apartment')) {
-            $query->where('appartement_id', $request->apartment);
+            $query->where('appartement_id', $request->apartment); 
         }
 
         if ($request->filled('recurrent')) {
-            $query->where('recurrent', $request->recurrent === 'true');
+            if($request->recurrent === 'true')
+                $query->where('recurrent', true);
+            elseif($request->recurrent === 'false')
+                $query->where('recurrent', false);
+            else{
+                $query->where('recurrent', true);
+                $query->whereNull('parent_charge_id');
+            }
         }
 
         $charges = $query->latest('date_paiement')->paginate(15)->withQueryString();
