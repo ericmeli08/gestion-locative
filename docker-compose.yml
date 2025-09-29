@@ -13,5 +13,5 @@ services:
       - /var/www/vendor           # vendor reste dans le conteneur
       - /var/www/node_modules     # node_modules reste dans le conteneur
     ports:
-      - "8000:8000"
-    command: php artisan serve --host=0.0.0.0 --port=8000
+      - "8001:8001"
+    command: php artisan serve --host=0.0.0.0 --port=8001
