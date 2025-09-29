@@ -55,3 +55,5 @@ CMD ["sh", "-c", "cron && php-fpm"]
 
 
 USER laravel
+
+
