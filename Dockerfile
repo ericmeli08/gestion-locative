@@ -34,9 +34,23 @@ RUN mkdir -p database && \
     touch database/database.sqlite && \
     chown -R www-data:www-data database
 
-RUN php artisan migrate:fresh --seed
-
 # Donner les bonnes permissions
 RUN chown -R laravel:www-data /var/www
 
+RUN apt-get update && apt-get install -y cron
+
+
 USER laravel
+
+# Copier le fichier cron
+COPY laravel-cron /etc/cron.d/laravel-cron
+
+# Donner les permissions
+RUN chmod 0644 /etc/cron.d/laravel-cron
+
+# Appliquer le cron
+RUN crontab /etc/cron.d/laravel-cron
+
+# Lancer cron et PHP-FPM au démarrage
+CMD ["sh", "-c", "cron && php-fpm"]
+

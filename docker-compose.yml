@@ -1,11 +1,17 @@
-version: '3.8'
+version: "3.9"
 
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - 8000:8000
+    container_name: gestion-locative-app
     working_dir: /var/www
+    volumes:
+      - .:/var/www                # Ton code Laravel synchronisé
+      - ./database:/var/www/database  # La base SQLite reste sur ton disque
+      - /var/www/vendor           # vendor reste dans le conteneur
+      - /var/www/node_modules     # node_modules reste dans le conteneur
+    ports:
+      - "8000:8000"
     command: php artisan serve --host=0.0.0.0 --port=8000
