@@ -54,6 +54,12 @@ RUN crontab /etc/cron.d/laravel-cron
 CMD ["sh", "-c", "cron && php-fpm"]
 
 
+RUN git config --system --add safe.directory /var/www
+RUN cd /var/www && git config user.name "melieric08" && git config user.email "fouegangmeli@gmail.com"
+
+
+
+
 USER laravel
 
 
