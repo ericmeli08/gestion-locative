@@ -40,7 +40,6 @@ RUN chown -R laravel:www-data /var/www
 RUN apt-get update && apt-get install -y cron
 
 
-USER laravel
 
 # Copier le fichier cron
 COPY laravel-cron /etc/cron.d/laravel-cron
@@ -54,3 +53,5 @@ RUN crontab /etc/cron.d/laravel-cron
 # Lancer cron et PHP-FPM au démarrage
 CMD ["sh", "-c", "cron && php-fpm"]
 
+
+USER laravel
