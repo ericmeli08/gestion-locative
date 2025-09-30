@@ -271,7 +271,7 @@
           </div>
 
           <!-- Sauvegarde automatique -->
-          <div class="flex items-center justify-between">
+          <!-- <div class="flex items-center justify-between">
             <div>
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
                 <CloudArrowUpIcon class="inline h-4 w-4 mr-2" />
@@ -286,7 +286,7 @@
               checked
               class="h-4 w-4 text-primary-600 input-field focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
             />
-          </div>
+          </div> -->
 
           <!-- Sauvegarde de la base de données - Section améliorée -->
           <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">

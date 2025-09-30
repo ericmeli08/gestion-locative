@@ -17,7 +17,7 @@ class GenerateRecurringCharges extends Command
         // où parent_charge_id est NULL.
         $recurringCharges = ChargeMensuelle::where('recurrent', true)
                                           ->whereNull('parent_charge_id')
-                                          ->get();
+                                          ->get(); 
 
         foreach ($recurringCharges as $charge) {
             // 2. On calcule la date de la prochaine charge
