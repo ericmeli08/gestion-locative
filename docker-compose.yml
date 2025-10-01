@@ -1,4 +1,3 @@
-version: "3.9"
 
 services:
   app:
@@ -10,8 +9,19 @@ services:
     volumes:
       - .:/var/www                # Ton code Laravel synchronisé
       - ./database:/var/www/database  # La base SQLite reste sur ton disque
-      - /var/www/vendor           # vendor reste dans le conteneur
-      - /var/www/node_modules     # node_modules reste dans le conteneur
+    #   - /var/www/vendor           # vendor reste dans le conteneur
+    #   - /var/www/node_modules     # node_modules reste dans le conteneur
     ports:
-      - "8001:8001"
-    command: php artisan serve --host=0.0.0.0 --port=8001
+      - "8000:8000"
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  # Frontend Vue/Inertia (Vite Hot Reload)
+  node:
+    image: node:18
+    container_name: laravel-node
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    command: npm run dev -- --host
+    ports:
+      - "5173:5173"

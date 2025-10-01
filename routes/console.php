@@ -9,8 +9,4 @@ use Illuminate\Support\Facades\Schedule;
 //     $this->comment(Inspiring::quote());
 // })->purpose('Display an inspiring quote');
 
-/*
- * Planification
- */
-// Schedule::command(GenerateRecurringCharges::class)
-//     ->monthlyOn(1, '00:00');
+

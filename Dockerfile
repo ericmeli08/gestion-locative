@@ -29,6 +29,7 @@ RUN composer install
 RUN npm install
 RUN npm run build
 
+
 # Créer le dossier database si absent
 RUN mkdir -p database && \
     touch database/database.sqlite && \
