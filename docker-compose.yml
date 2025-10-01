@@ -9,6 +9,7 @@ services:
     volumes:
       - .:/var/www                # Ton code Laravel synchronisé
       - ./database:/var/www/database  # La base SQLite reste sur ton disque
+      - ./.env:/var/www/.env
     #   - /var/www/vendor           # vendor reste dans le conteneur
     #   - /var/www/node_modules     # node_modules reste dans le conteneur
     ports:

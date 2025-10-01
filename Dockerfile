@@ -22,7 +22,6 @@ WORKDIR /var/www
 
 # Copier les fichiers
 COPY . .
-COPY .env .env
 
 # Installer les dépendances Laravel et JS
 RUN composer install
