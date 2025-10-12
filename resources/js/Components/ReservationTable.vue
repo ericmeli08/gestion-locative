@@ -44,7 +44,7 @@
                                 </div>
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700 dark:text-gray-300">
-                                {{ reservation.appartement?.nom || 'N/A' }}
+                                {{ reservation.appartement?.name || 'N/A' }}
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700 dark:text-gray-300">
                                 <div class="flex flex-col">
@@ -92,23 +92,29 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps({
-    reservations: {
-        type: Array,
-        default: () => [],
-    },
-    showPagination: {
-        type: Boolean,
-        default: true,
-    },
-    maxItems: {
-        type: Number,
-        default: null,
-    },
-})
+interface Reservation {
+    id: number
+    client: string
+    email?: string
+    appartement?: { name?: string }
+    date_entree?: string
+    date_sortie?: string
+    nombre_nuits?: number
+    plateforme?: string
+    revenus_totaux?: number
+    statut_paiement?: string
+}
+
+const props = defineProps<{
+    reservations: Reservation[],
+    showPagination?: boolean,
+    maxItems?: number | null,
+}>()
+
+console.log( "Reservations: ", props.reservations)
 
 const displayedReservations = computed(() => {
     if (props.maxItems) {
