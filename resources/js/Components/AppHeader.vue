@@ -63,7 +63,7 @@
             >
               <img
                 class="h-8 w-8 rounded-full"
-                :src="$page.props.auth.user.avatar || '/images/default-avatar.png'"
+                :src="$page.props.auth.user.avatar || 'https://api.dicebear.com/9.x/adventurer/svg?seed=angela'"
                 :alt="$page.props.auth.user.name"
               />
             </MenuButton>

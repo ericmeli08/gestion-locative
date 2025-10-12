@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import AppSidebar from '@/Components/AppSidebar.vue'
 import AppHeader from '@/Components/AppHeader.vue'

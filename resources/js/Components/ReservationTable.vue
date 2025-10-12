@@ -1,156 +1,170 @@
 <template>
-  <div class="overflow-hidden">
-    <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
-      <thead class="bg-gray-50 dark:bg-gray-800">
-        <tr>
-          <th
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-          >
-            {{ $t('reservations.table.client') }}
-          </th>
-          <th
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-          >
-            {{ $t('reservations.table.apartment') }}
-          </th>
-          <th
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-          >
-            {{ $t('reservations.table.dates') }}
-          </th>
-          <th
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-          >
-            {{ $t('reservations.table.revenue') }}
-          </th>
-          <th
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-          >
-            {{ $t('reservations.table.status') }}
-          </th>
-          <th v-if="showActions" class="relative px-6 py-3">
-            <span class="sr-only">{{ $t('common.actions') }}</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-        <tr
-          v-for="reservation in displayedReservations"
-          :key="reservation.id"
-          class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
-        >
-          <td class="px-6 py-4 whitespace-nowrap">
-            <div class="flex items-center">
-              <div>
-                <div class="text-sm font-medium text-gray-900 dark:text-white">
-                  {{ reservation.client }}
-                </div>
-                <div class="text-sm text-gray-500 dark:text-gray-400">
-                  {{ reservation.plateforme }}
-                </div>
-              </div>
+    <div class="flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-900">
+                        <tr>
+                            <th scope="col"
+                                class="py-3.5 pl-4 pr-3 text-left text-xs font-semibold text-gray-900 dark:text-gray-100 sm:pl-6">
+                                Client
+                            </th>
+                            <th scope="col"
+                                class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900 dark:text-gray-100">
+                                Appartement
+                            </th>
+                            <th scope="col"
+                                class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900 dark:text-gray-100">
+                                Dates
+                            </th>
+                            <th scope="col"
+                                class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900 dark:text-gray-100">
+                                Plateforme
+                            </th>
+                            <th scope="col"
+                                class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900 dark:text-gray-100">
+                                Montant
+                            </th>
+                            <th scope="col"
+                                class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900 dark:text-gray-100">
+                                Statut
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
+                        <tr v-for="reservation in displayedReservations" :key="reservation.id"
+                            class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                            <td
+                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100 sm:pl-6">
+                                <div class="flex flex-col">
+                                    <span>{{ reservation.client }}</span>
+                                    <span v-if="reservation.email" class="text-xs text-gray-500 dark:text-gray-400">
+                                        {{ reservation.email }}
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700 dark:text-gray-300">
+                                {{ reservation.appartement?.nom || 'N/A' }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700 dark:text-gray-300">
+                                <div class="flex flex-col">
+                                    <span>{{ formatDate(reservation.date_entree) }}</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                                        {{ formatDate(reservation.date_sortie) }}
+                                    </span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                                        ({{ reservation.nombre_nuits }} nuit{{
+                                            reservation.nombre_nuits > 1 ? 's' : ''
+                                        }})
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                <span :class="[
+                                    'inline-flex items-center rounded-full px-2 py-1 text-xs font-medium',
+                                    platformClasses(reservation.plateforme),
+                                ]">
+                                    {{ reservation.plateforme }}
+                                </span>
+                            </td>
+                            <td
+                                class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                {{ formatCurrency(reservation.revenus_totaux) }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                <span :class="[
+                                    'inline-flex items-center rounded-full px-2 py-1 text-xs font-medium',
+                                    statusClasses(reservation.statut_paiement),
+                                ]">
+                                    {{ statusLabel(reservation.statut_paiement) }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr v-if="displayedReservations.length === 0">
+                            <td colspan="6" class="px-3 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                                Aucune réservation
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-            {{ reservation.appartement?.name }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-            <div>
-              {{ formatDate(reservation.date_entree) }} - {{ formatDate(reservation.date_sortie) }}
-            </div>
-            <div class="text-xs text-gray-500 dark:text-gray-400">
-              {{ Number(reservation.nombre_nuits).toFixed(0) }} {{ $t('common.nights') }}
-            </div>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-            {{ formatCurrency(reservation.revenus_totaux) }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <StatusBadge :status="reservation.statut_paiement" />
-          </td>
-          <td v-if="showActions" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-            <div class="flex items-center space-x-2">
-              <button
-                @click="$emit('edit', reservation)"
-                class="text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"
-              >
-                {{ $t('common.edit') }}
-              </button>
-              <button
-                @click="$emit('delete', reservation)"
-                class="text-error-600 hover:text-error-900 dark:text-error-400 dark:hover:text-error-300"
-              >
-                {{ $t('common.delete') }}
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div v-if="displayedReservations.length === 0" class="text-center py-12">
-      <CalendarDaysIcon class="mx-auto h-12 w-12 text-gray-400" />
-      <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">
-        {{ $t('reservations.no_reservations') }}
-      </h3>
-      <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-        {{ $t('reservations.no_reservations_description') }}
-      </p>
+        </div>
     </div>
-  </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
-import { CalendarDaysIcon } from '@heroicons/vue/24/outline'
-import StatusBadge from '@/Components/StatusBadge.vue'
-import { useI18n } from '@/Composables/useI18n'
 
 const props = defineProps({
-  reservations: {
-    type: Array,
-    default: () => [],
-  },
-  showActions: {
-    type: Boolean,
-    default: true,
-  },
-  showPagination: {
-    type: Boolean,
-    default: true,
-  },
-  maxItems: {
-    type: Number,
-    default: null,
-  },
+    reservations: {
+        type: Array,
+        default: () => [],
+    },
+    showPagination: {
+        type: Boolean,
+        default: true,
+    },
+    maxItems: {
+        type: Number,
+        default: null,
+    },
 })
 
-const { $t } = useI18n()
-
-defineEmits(['edit', 'delete'])
-
 const displayedReservations = computed(() => {
-  if (props.maxItems) {
-    return props.reservations.slice(0, props.maxItems)
-  }
-  return props.reservations
+    if (props.maxItems) {
+        return props.reservations.slice(0, props.maxItems)
+    }
+    return props.reservations
 })
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleString('fr-FR', {
-    timeZone: 'Africa/Douala',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-};
+    if (!date) return 'N/A'
+    return new Date(date).toLocaleDateString('fr-FR', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    })
+}
 
 const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('fr-FR', {
-    style: 'currency',
-    currency: 'XOF',
-  }).format(amount)
+    if (amount == null || isNaN(amount)) return '0 FCFA'
+    return new Intl.NumberFormat('fr-FR', {
+        style: 'currency',
+        currency: 'XOF',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    }).format(amount)
+}
+
+const platformClasses = (platform) => {
+    const classes = {
+        airbnb: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+        booking:
+            'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+        direct:
+            'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+    }
+    return classes[platform] || 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+}
+
+const statusClasses = (status) => {
+    const classes = {
+        paid: 'bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400',
+        unpaid:
+            'bg-error-100 text-error-700 dark:bg-error-900/30 dark:text-error-400',
+        partial:
+            'bg-warning-100 text-warning-700 dark:bg-warning-900/30 dark:text-warning-400',
+    }
+    return classes[status] || 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+}
+
+const statusLabel = (status) => {
+    const labels = {
+        paid: 'Payé',
+        unpaid: 'Non payé',
+        partial: 'Partiel',
+    }
+    return labels[status] || status
 }
 </script>
+
