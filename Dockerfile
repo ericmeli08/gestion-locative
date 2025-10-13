@@ -22,12 +22,12 @@ WORKDIR /var/www
 
 # Copier les fichiers
 COPY . .
-COPY .env .env
 
 # Installer les dépendances Laravel et JS
 RUN composer install
 RUN npm install
 RUN npm run build
+
 
 # Créer le dossier database si absent
 RUN mkdir -p database && \

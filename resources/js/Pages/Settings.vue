@@ -70,7 +70,7 @@
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
         <Cog6ToothIcon class="inline h-8 w-8 mr-3 text-primary-600" />
-        Paramètres
+        Paramètressssjkhkjhkjh
       </h1>
       <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
         Gérez vos préférences et paramètres de l'application
