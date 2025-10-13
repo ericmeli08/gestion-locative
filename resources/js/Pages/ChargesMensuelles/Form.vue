@@ -301,6 +301,23 @@
     apartments: Array,
   })
 
+import { usePage } from '@inertiajs/vue3'
+
+const page = usePage()
+
+// Surveille les changements du message de succès
+watch(
+    () => page.props.flash?.success,
+    (newVal) => {
+        if (newVal) {
+            // Exemple : afficher avec un toast, une alerte, etc.
+            console.log('✅ Message de succès:', newVal)
+            alert(newVal)
+        }
+    },
+    { immediate: true }
+)
+
   // État pour la sélection des appartements
   const selectedApartments = ref([])
   const showApartmentSelection = ref(true)
@@ -377,6 +394,8 @@
 
     const url = props.charge?.id ? route('charges.update', props.charge.id) : route('charges.store')
     const method = props.charge?.id ? 'put' : 'post'
+
+    console.log("Submitting form to ", url, " with data: ", form)
 
     form[method](url, {
       onSuccess: () => {

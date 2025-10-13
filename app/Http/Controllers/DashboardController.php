@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Reservation;
 use App\Models\Depense;
 use App\Models\Stock;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Carbon\Carbon;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -36,11 +35,20 @@ class DashboardController extends Controller
 
         // Calcul du taux d'occupation
         $totalDaysInMonth = $currentMonth->daysInMonth;
-        $occupiedDays = Reservation::where('date_entree', '<=', $currentMonth->endOfMonth())
+        $occupiedDays = Reservation::where('date_entree', '<=', Carbon::now()->endOfMonth())
             ->where('date_sortie', '>=', $currentMonth)
             ->sum('nombre_nuits');
-        
+
         $occupancyRate = $totalDaysInMonth > 0 ? round(($occupiedDays / $totalDaysInMonth) * 100, 1) : 0;
+
+        // Taux d'occupation du mois précédent
+        $previousMonthDays = $previousMonth->daysInMonth;
+        $previousOccupiedDays = Reservation::where('date_entree', '<=', $previousMonth->copy()->endOfMonth())
+            ->where('date_sortie', '>=', $previousMonth)
+            ->where('date_entree', '<', $currentMonth)
+            ->sum('nombre_nuits');
+
+        $previousOccupancyRate = $previousMonthDays > 0 ? round(($previousOccupiedDays / $previousMonthDays) * 100, 1) : 0;
 
         // Réservations récentes
         $recentReservations = Reservation::with('appartement')
@@ -50,18 +58,19 @@ class DashboardController extends Controller
 
         // Stocks faibles
         $lowStocks = Stock::whereRaw('reste <= seuil')
+            ->with('appartement')
             ->get();
 
         return Inertia::render('Dashboard', [
             'metrics' => [
-                'revenue' => $currentRevenue,
+                'revenue' => (float) $currentRevenue,
                 'revenueTrend' => $this->calculateTrend($currentRevenue, $previousRevenue),
-                'expenses' => $currentExpenses,
+                'expenses' => (float) $currentExpenses,
                 'expensesTrend' => $this->calculateTrend($currentExpenses, $previousExpenses),
-                'profit' => $profit,
+                'profit' => (float) $profit,
                 'profitTrend' => $this->calculateTrend($profit, $previousProfit),
-                'occupancyRate' => $occupancyRate,
-                'occupancyTrend' => '+3.1%', // À calculer selon vos besoins
+                'occupancyRate' => (float) $occupancyRate,
+                'occupancyTrend' => $this->calculateTrend($occupancyRate, $previousOccupancyRate),
             ],
             'recentReservations' => $recentReservations,
             'lowStocks' => $lowStocks,
@@ -75,6 +84,6 @@ class DashboardController extends Controller
         }
 
         $percentage = (($current - $previous) / $previous) * 100;
-        return ($percentage >= 0 ? '+' : '') . number_format($percentage, 1) . '%';
+        return ($percentage >= 0 ? '+' : '') . number_format($percentage, 1, '.', '') . '%';
     }
 }

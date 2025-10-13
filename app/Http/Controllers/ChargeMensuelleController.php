@@ -7,6 +7,7 @@ use App\Models\Appartement;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ChargeMensuelleController extends Controller
 {
@@ -66,7 +67,7 @@ class ChargeMensuelleController extends Controller
             'selected_apartments.*' => 'exists:appartements,id',
         ]);
 
-        ChargeMensuelle::create($validated);
+        // ChargeMensuelle::create($validated);
         // Validation personnalisée pour les charges générales
         if ($validated['is_general_charge'] && empty($validated['selected_apartments'])) {
             return back()->withErrors([
@@ -74,7 +75,9 @@ class ChargeMensuelleController extends Controller
             ]);
         }
 
-        return redirect()->route('charges.index')->with('success', 'Charge créée avec succès.');
+
+
+        // return redirect()->route('charges.index')->with('success', 'Charge créée avec succès.');
         DB::beginTransaction();
 
         try {
@@ -109,7 +112,7 @@ class ChargeMensuelleController extends Controller
             }
 
             DB::commit();
-
+            Log::info('Erreur lors de la création des dépenses : ' .$message );
             return redirect()->route('charges.index')->with('success', $message);
         } catch (\Exception $e) {
             DB::rollBack();

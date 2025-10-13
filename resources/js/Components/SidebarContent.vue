@@ -1,9 +1,9 @@
 <template>
   <div class="flex grow flex-col gap-y-5 overflow-y-auto px-6">
     <!-- Logo -->
-    <div class="flex h-16 shrink-0 items-center">
-      <img class="h-8 w-auto" src="/images/logo.svg" alt="Gestion Locative" />
-      <span class="ml-3 text-xl font-bold text-gray-900 dark:text-white"> Gestion Locative </span>
+    <div class="flex  p-2 flex-col h-18 shrink-0 items-start">
+        <img class="h-10 w-auto" :src="Logo" alt="Gestion Locative" />
+        <span class="ml-3 text-xl font-bold text-gray-900 dark:text-white"> Gestion Locative </span>
     </div>
 
     <!-- Navigation -->
@@ -139,6 +139,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import SidebarItem from '@/Components/SidebarItem.vue'
 import { useI18n } from '@/Composables/useI18n'
+import Logo from '@/assets/images/logo.png'
 
 const { $t } = useI18n()
 const $page = usePage()
