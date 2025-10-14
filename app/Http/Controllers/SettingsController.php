@@ -24,7 +24,7 @@ class SettingsController extends Controller
                 $commands = [
                     ['git', 'add', $dbPath],
                     ['git', 'commit', '-m', 'Mise à jour de la base SQLite'],
-                    ['git', 'push'],
+                    ['git', 'push -u origin dev'],
                 ];
 
                 foreach ($commands as $command) {

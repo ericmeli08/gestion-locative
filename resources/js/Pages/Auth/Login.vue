@@ -34,7 +34,7 @@ const submit = () => {
 <template>
     <GuestLayout>
 
-        <Head title="Connexion" />
+        <Head title="Connexion " />
 
         <div
             class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -172,7 +172,7 @@ const submit = () => {
             </div>
         </div>
     </GuestLayout>
-  
+
 </template>
 
 <style scoped>
