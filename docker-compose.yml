@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: gestion-locative-app
+    container_name: gestion-locative
     working_dir: /var/www
     volumes:
       - .:/var/www                # Ton code Laravel synchronisé
@@ -17,12 +17,4 @@ services:
     command: php artisan serve --host=0.0.0.0 --port=8000
 
   # Frontend Vue/Inertia (Vite Hot Reload)
-  node:
-    image: node:18
-    container_name: laravel-node
-    working_dir: /var/www
-    volumes:
-      - .:/var/www
-    command: npm run dev -- --host
-    ports:
-      - "5173:5173"
+
