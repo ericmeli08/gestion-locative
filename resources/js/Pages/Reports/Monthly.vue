@@ -72,7 +72,7 @@
             Retour mensuel
           </button>
 
-          <button @click="exportData" class="btn btn-secondary">
+          <button @click="handleExport" class="btn btn-secondary">
             <DocumentArrowDownIcon class="w-4 h-4 mr-2" />
             Exporter
           </button>
@@ -96,16 +96,16 @@
             </p>
           </div>
         </div>
-        
+
         <div class="space-y-2">
           <p class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white break-words leading-tight">
             {{ formatCurrencyCompact(summary.totalRevenue) }}
           </p>
-          
+
           <div class="flex items-center">
             <ArrowTrendingUpIcon v-if="revenuesTrend > 0" class="h-4 w-4 text-success-500 mr-1 flex-shrink-0" />
             <ArrowTrendingDownIcon v-else-if="revenuesTrend < 0" class="h-4 w-4 text-error-500 mr-1 flex-shrink-0" />
-            <span 
+            <span
               :class="revenuesTrend > 0 ? 'text-success-600' : revenuesTrend < 0 ? 'text-error-600' : 'text-gray-500'"
               class="text-xs font-medium"
             >
@@ -132,12 +132,12 @@
             </p>
           </div>
         </div>
-        
+
         <div class="space-y-2">
           <p class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white break-words leading-tight">
             {{ formatCurrencyCompact(summary.totalExpenses) }}
           </p>
-          
+
           <div class="flex items-center">
             <span class="text-xs text-gray-500 dark:text-gray-400">
               {{ getExpensePercentage(summary.totalExpenses, summary.totalRevenue) }}% des revenus
@@ -162,13 +162,13 @@
             </p>
           </div>
         </div>
-        
+
         <div class="space-y-2">
           <p class="text-xl lg:text-2xl font-bold break-words leading-tight"
              :class="summary.netProfit >= 0 ? 'text-success-600 dark:text-success-400' : 'text-error-600 dark:text-error-400'">
             {{ formatCurrencyCompact(summary.netProfit) }}
           </p>
-          
+
           <div class="flex items-center">
             <div class="flex items-center px-2 py-1 rounded-full text-xs font-medium"
                  :class="summary.netProfit >= 0 ? 'bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-300' : 'bg-error-100 text-error-800 dark:bg-error-900/30 dark:text-error-300'">
@@ -196,15 +196,15 @@
             </p>
           </div>
         </div>
-        
+
         <div class="space-y-2">
           <p class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white break-words leading-tight">
             {{ summary.margin }}%
           </p>
-          
+
           <div class="flex items-center">
             <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-              <div 
+              <div
                 class="h-2 rounded-full transition-all duration-500"
                 :class="getMarginColorClass(summary.margin)"
                 :style="{ width: Math.min(Math.abs(summary.margin), 100) + '%' }"
@@ -419,52 +419,12 @@ const backToMonthly = () => {
   })
 }
 
-import * as XLSX from 'xlsx'
 
-const exportData = () => {
-  const data = displayData.value || []
-  const isDaily = props.isDaily
+import { exportData } from '@/utils/exportData.js'
 
-  // Créer un nouveau classeur Excel
-  const workbook = XLSX.utils.book_new()
-
-  // Préparer les données avec en-têtes
-  const worksheetData = [
-    isDaily
-      ? ['Jour', 'Revenus (F CFA)', 'Dépenses (F CFA)', 'Bénéfice (F CFA)', 'Marge (%)']
-      : ['Mois', 'Revenus (F CFA)', 'Dépenses (F CFA)', 'Charges (F CFA)', 'Bénéfice (F CFA)', 'Marge (%)']
-  ]
-
-  // Ajouter les données
-  data.forEach(item => {
-    if (isDaily) {
-      worksheetData.push([
-        item.day_name,
-        parseFloat(item.revenue) || 0,
-        parseFloat(item.expenses) || 0,
-        parseFloat(item.profit) || 0,
-        parseFloat(item.margin) || 0
-      ])
-    } else {
-      worksheetData.push([
-        item.month,
-        parseFloat(item.revenue) || 0,
-        parseFloat(item.expenses) || 0,
-        parseFloat(item.charges) || 0,
-        parseFloat(item.profit) || 0,
-        parseFloat(item.margin) || 0
-      ])
-    }
-  })
-
-  const worksheet = XLSX.utils.aoa_to_sheet(worksheetData)
-  XLSX.utils.book_append_sheet(workbook, worksheet, isDaily ? 'Rapport Journalier' : 'Rapport Mensuel')
-
-  const fileName = isDaily
-    ? `rapport-journalier-${props.monthName?.replace(' ', '-')}.xlsx`
-    : `rapport-mensuel-${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}.xlsx`
-
-  XLSX.writeFile(workbook, fileName)
+// Remplacez votre ancienne fonction par :
+const handleExport = () => {
+  exportData(displayData.value, props.isDaily, props.monthName)
 }
 
 const formatCurrency = (amount) => {
@@ -655,7 +615,7 @@ watch(() => displayData.value, () => {
 // Fonctions utilitaires à ajouter dans votre composant
 const formatCurrencyCompact = (amount) => {
   const absAmount = Math.abs(amount)
-  
+
   if (absAmount >= 1000000000) {
     return (amount / 1000000000).toFixed(1) + 'Md F CFA'
   } else if (absAmount >= 1000000) {
