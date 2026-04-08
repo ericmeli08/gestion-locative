@@ -13,7 +13,7 @@ class DisponibiliteController extends Controller
 {
     public function index(Request $request)
     {
-        $apartments = Appartement::all();
+        $apartments = Appartement::where('active', true)->get();
         $currentMonth = $request->get('month', Carbon::now()->format('Y-m'));
 
         $startDate = Carbon::parse($currentMonth . '-01');
@@ -29,7 +29,7 @@ class DisponibiliteController extends Controller
     $endOfMonth = Carbon::parse($currentMonth)->endOfMonth()->endOfDay();
 
     // On récupère les réservations qui chevauchent ce mois
-    $reservations = Reservation::with('appartement')->where(function ($query) use ($startOfMonth, $endOfMonth) {
+    $reservations = Reservation::with('appartement')->whereHas('appartement', fn($q) => $q->where('active', true))->where(function ($query) use ($startOfMonth, $endOfMonth) {
         $query->whereBetween('date_entree', [$startOfMonth, $endOfMonth])
               ->orWhereBetween('date_sortie', [$startOfMonth, $endOfMonth])
               ->orWhere(function ($q) use ($startOfMonth, $endOfMonth) {

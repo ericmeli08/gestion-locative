@@ -81,9 +81,69 @@ class AppartementController extends Controller
 
     public function toggleStatus(Appartement $appartement)
     {
-        $appartement->update(['active' => !$appartement->active]);
+        $isCurrentlyActive = $appartement->active;
+
+        if ($isCurrentlyActive) {
+            // === DÉSACTIVATION ===
+
+            // 1. Mémoriser et désactiver les charges récurrentes (charges "maîtresses" uniquement)
+            $appartement->chargesMensuelles()
+                ->whereNull('parent_charge_id')   // charges maîtresses
+                ->where('recurrent', true)
+                ->update([
+                    'was_recurrent' => true,
+                    'recurrent'     => false,
+                ]);
+
+            // 2. Désactiver l'appartement
+            $appartement->update(['active' => false]);
+
+        } else {
+            // === RÉACTIVATION ===
+
+            // 1. Restaurer la récurrence des charges qui l'étaient avant
+            $appartement->chargesMensuelles()
+                ->whereNull('parent_charge_id')
+                ->where('was_recurrent', true)
+                ->update([
+                    'recurrent'     => true,
+                    'was_recurrent' => false,
+                ]);
+
+            // 2. Mettre à jour la date de référence des charges réactivées
+            //    pour que le service de génération parte du mois actuel
+            //    et non du mois où l'appart a été désactivé.
+            //    On met à jour la dernière charge enfant (ou la maîtresse si aucun enfant)
+            //    pour qu'elle pointe sur le mois précédant aujourd'hui.
+            $reactivatedCharges = $appartement->chargesMensuelles()
+                ->whereNull('parent_charge_id')
+                ->where('recurrent', true)
+                ->get();
+
+            $previousMonth = \Carbon\Carbon::now()->subMonth()->startOfMonth();
+
+            foreach ($reactivatedCharges as $charge) {
+                $lastChild = $charge->recurrentCharges()->latest('date_paiement')->first();
+
+                if ($lastChild) {
+                    // On avance la date de la dernière récurrence au mois précédent
+                    // pour que la prochaine génération crée le mois courant
+                    if (\Carbon\Carbon::parse($lastChild->date_paiement)->lt($previousMonth)) {
+                        $lastChild->update(['date_paiement' => $previousMonth]);
+                    }
+                } else {
+                    // Pas d'enfants : on met à jour la charge maîtresse elle-même
+                    if (\Carbon\Carbon::parse($charge->date_paiement)->lt($previousMonth)) {
+                        $charge->update(['date_paiement' => $previousMonth]);
+                    }
+                }
+            }
+
+            // 3. Réactiver l'appartement
+            $appartement->update(['active' => true]);
+        }
 
         return redirect()->back()
-                        ->with('success', __('messages.appartement.status_updated'));
+            ->with('success', __('messages.appartement.status_updated'));
     }
 }

@@ -10,19 +10,15 @@ class ChargeMensuelle extends Model
     use HasFactory;
 
     protected $fillable = [
-        'service',
-        'appartement_id',
-        'date_paiement',
-        'montant',
-        'recurrent',
-        'notes',
-        'parent_charge_id',
-    ];
+             'service', 'appartement_id', 'date_paiement', 'montant',
+             'recurrent', 'was_recurrent', 'notes', 'parent_charge_id',
+          ];
 
     protected $casts = [
         'date_paiement' => 'date',
         'montant' => 'decimal:2',
         'recurrent' => 'boolean',
+        'was_recurrent' => 'boolean',
     ];
 
     public function appartement()

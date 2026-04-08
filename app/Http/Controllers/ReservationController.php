@@ -40,7 +40,7 @@ class ReservationController extends Controller
 
     public function create(Request $request)
     {
-        $apartments = Appartement::all();
+        $apartments = Appartement::where('active', true)->get();
         $date = null;
         $apartement_id = null;
         if ($request->filled(['date', 'apartment_id'])) {
@@ -58,6 +58,11 @@ class ReservationController extends Controller
     public function store(StoreReservationRequest $request)
     {
         $validated = $request->validated();
+
+        $appartement = Appartement::findOrFail($validated['appartement_id']);
+        if (!$appartement->active) {
+            return back()->withErrors(['appartement_id' => 'Cet appartement est inactif.']);
+        }
 
         // Calcul automatique du nombre de nuits et revenus
         $dateEntree = \Carbon\Carbon::parse($validated['date_entree']);
