@@ -8,7 +8,7 @@
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 {{
                     reservation?.id ? $t('reservations.edit_subtitle') : $t('reservations.create_subtitle')
-                }}
+                }} 
             </p>
         </div>
 
