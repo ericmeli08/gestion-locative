@@ -13,6 +13,13 @@ class RecurringChargeService
     {
         $currentDate = Carbon::now();
 
+        // Skip si on est dans le mois à ignorer
+        $skipUntil = Carbon::create(2026, 5, 1); // Commence en mai 2026
+        if ($currentDate->lt($skipUntil)) {
+            Log::info('Génération des charges récurrentes suspendue jusqu\'au ' . $skipUntil->format('m/Y'));
+            return;
+        }
+
         // On définit le mois pour lequel on doit s'assurer que les charges existent (le mois actuel)
         $targetMonth = $currentDate->startOfMonth();
 
